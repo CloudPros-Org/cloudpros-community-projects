@@ -4,8 +4,7 @@
 ## Self-Healing Linux Web Server
 
 **Deadline:** Sunday Nov 1st 2026, 11:59 PM (GMT)  
-**Submission:** GitHub Pull Request  
-**Operating System:** Ubuntu 24.04
+**Submission:** GitHub Pull Request
 
 ---
 
