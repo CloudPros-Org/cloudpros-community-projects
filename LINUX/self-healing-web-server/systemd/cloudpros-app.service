@@ -1,0 +1,16 @@
+[Unit]
+Description=CloudPros Web Service
+After=network.target
+
+[Service]
+Type=simple
+User=appuser
+Group=appuser
+ExecStart=/opt/cloudpros/server.sh
+Restart=always
+RestartSec=10
+StartLimitIntervalSec=0
+WorkingDirectory=/opt/cloudpros
+
+[Install]
+WantedBy=multi-user.target

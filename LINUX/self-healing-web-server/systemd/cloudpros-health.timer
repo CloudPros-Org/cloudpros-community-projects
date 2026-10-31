@@ -1,0 +1,10 @@
+[Unit]
+Description=Run CloudPros Health Check Every Minute
+
+[Timer]
+OnBootSec=30s
+OnUnitActiveSec=60s
+Unit=cloudpros-health.service
+
+[Install]
+WantedBy=timers.target
