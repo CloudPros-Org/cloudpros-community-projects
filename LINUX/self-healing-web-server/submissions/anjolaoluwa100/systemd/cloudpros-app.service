@@ -1,0 +1,16 @@
+[Unit]
+Description=CloudPros demo web app
+After=network.target
+
+[Service]
+User=appuser
+Group=appuser
+WorkingDirectory=/opt/cloudpros
+ExecStart=/opt/cloudpros/server.sh
+Restart=always
+RestartSec=3
+StandardOutput=append:/var/log/cloudpros/app.log
+StandardError=append:/var/log/cloudpros/app.log
+
+[Install]
+WantedBy=multi-user.target
