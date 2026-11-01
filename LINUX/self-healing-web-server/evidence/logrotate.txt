@@ -1,0 +1,14 @@
+warning: logrotate in debug mode does nothing except printing debug messages!  Consider using verbose mode (-v) instead if this is not what you want.
+
+reading config file /etc/logrotate.d/cloudpros
+Reading state from file: /var/lib/logrotate/status
+Allocating hash table for state file, size 64 entries
+Creating new state
+
+Handling 1 logs
+
+rotating pattern: /var/log/cloudpros/*.log after 1 days empty log files are not rotated, (7 rotations), old logs are removed
+considering log /var/log/cloudpros/healthcheck.log
+  Now: 2026-11-01 19:38
+  Last rotated at 2026-11-01 19:36
+  log does not need rotating (log has already been rotated)
