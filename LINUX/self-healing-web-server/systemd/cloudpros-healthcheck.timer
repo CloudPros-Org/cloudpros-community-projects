@@ -1,0 +1,16 @@
+[Unit]
+Description=Trigger CloudPros Health Check Every Minute
+
+[Timer]
+# Link service file here
+Unit=cloudpros-healthcheck.service
+# Run 1 minute after booting up
+OnBootSec=1min
+# Repeat every 1 minute thereafter
+OnUnitActiveSec=1min
+# Accuracy setting to make sure systemd doesn't batch/delay the execution window
+AccuracySec=1s
+
+[Install]
+WantedBy=timers.target
+

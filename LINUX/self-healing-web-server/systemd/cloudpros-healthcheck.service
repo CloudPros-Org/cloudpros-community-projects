@@ -1,0 +1,6 @@
+[Unit]
+Description=Run CloudPros Health Check Script
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/bash /usr/local/bin/healthcheck.sh
