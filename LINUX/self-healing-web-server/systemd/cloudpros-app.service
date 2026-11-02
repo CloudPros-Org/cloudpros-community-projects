@@ -8,7 +8,7 @@ User=appuser
 Group=appuser
 ExecStart=/opt/cloudpros/server.sh
 Restart=always
-RestartSec=10
+RestartSec=3
 StartLimitIntervalSec=0
 WorkingDirectory=/opt/cloudpros
 
