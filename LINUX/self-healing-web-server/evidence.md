@@ -45,6 +45,29 @@ sudo ss -ltnp
 ```
 <img width="1297" height="347" alt="image" src="https://github.com/user-attachments/assets/298ab318-dacc-41c1-acf0-3497e876e438" />
 
+## Correction From Feedback.
+Getting the current PID
+```bash
+pgrep socat
+```
+<img width="270" height="17" alt="image" src="https://github.com/user-attachments/assets/bca9295c-6c88-451f-9067-7bc10dba3cd6" />
+
+
+```bash
+sudo kill -9 13734
+```
+```bash
+pgrep socat
+```
+<img width="222" height="20" alt="image" src="https://github.com/user-attachments/assets/c32310e6-36f9-4f08-88e3-8cb939624924" />
+
+Evidence that the PID has changed
+
+Measuring recovery time
+```bash
+journalctl -u cloudpros-app --since "20 seconds ago"
+```
+<img width="797" height="82" alt="image" src="https://github.com/user-attachments/assets/0ae22fe9-129c-4b5f-8e7b-b485a56834dc" />
 
 ## Backup and Log Rotation
 ### Successful backup creation
