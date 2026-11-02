@@ -51,57 +51,6 @@ This directory contains:
 ```bash
 sudo chmod +x /opt/cloudpros/*.sh
 ```
-## 🟦 Evidence: The deploy User Exists
-```bash
-id deploy
-```
-<img width="520" height="22" alt="image" src="https://github.com/user-attachments/assets/03816117-da6c-40ab-b14a-d5cfa6e09e25" />
-This proves the user exists, has a UID and belongs to the sudo group.
-
-## 🟦 Evidence: deploy Has Sudo Access
-```bash
-sudo -l -U deploy
-```
-<img width="612" height="40" alt="image" src="https://github.com/user-attachments/assets/447344d8-2034-4265-bccf-d0f6c190a461" />
-The user has full sudo priviledges.
-
-## 🟦 Evidence: SSH Key Login Works for deploy
-```bash
-sudo ls -l /home/deploy/.ssh/
-```
-<img width="600" height="32" alt="image" src="https://github.com/user-attachments/assets/837142d7-dc60-42ed-acf6-844eb09c1cac" />
-```bash
-sudo cat /home/deploy/.ssh/authorized_keys
-```
-<img width="677" height="33" alt="image" src="https://github.com/user-attachments/assets/5dec4cd2-d385-4a57-8a47-3aaf3d7649ae" />
-
-```bash
-ssh deploy@172.25.247.180
-```
-<img width="832" height="190" alt="image" src="https://github.com/user-attachments/assets/42cefbeb-d66a-4be7-aa32-9aac262f9083" />
-
-## 🟦 Evidence: Password Login Is Disabled
-```bash
-sudo grep -i passwordauthentication /etc/ssh/sshd_config
-```
-<img width="682" height="50" alt="image" src="https://github.com/user-attachments/assets/502dd88d-06c0-49ec-af5e-0918d5ed95d4" />
-
-```bash
-sudo grep -i kbdinteractiveauthentication /etc/ssh/sshd_config
-```
-<img width="775" height="67" alt="image" src="https://github.com/user-attachments/assets/bf2a56d5-573a-413d-a25a-e645d9fe4e1a" />
-
-## 🟦 Evidence: Root SSH Login Is Disabled
-```bash
-sudo grep -i permitrootlogin /etc/ssh/sshd_config
-```
-<img width="702" height="32" alt="image" src="https://github.com/user-attachments/assets/f217550d-77d9-4571-97df-971119ed73c9" />
-
-##🟦 Evidence: SSH Daemon Reloaded After Changes
-```bash
-sudo systemctl status ssh
-```
-<img width="647" height="225" alt="image" src="https://github.com/user-attachments/assets/d643cc4e-6402-4e0c-9d4b-5098a30045aa" />
 
 
 
