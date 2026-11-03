@@ -1,0 +1,6 @@
+[Unit]
+Description=Schedule daily application backup
+
+[Service]
+Type=onshot
+ExecStart=/usr/local/bin/backup.sh
