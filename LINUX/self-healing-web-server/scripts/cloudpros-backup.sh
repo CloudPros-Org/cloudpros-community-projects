@@ -32,4 +32,5 @@ if [ $VERIFY -eq 0 ]; then
     echo "$TIMESTAMP - Backup verified successfully" >> "$LOGFILE"
 else
     echo "$TIMESTAMP - Backup verification FAILED" >> "$LOGFILE"
+    exit 1
 fi
