@@ -92,7 +92,7 @@ Key directives:
 
 ```Code
 Restart=always
-RestartSec=10
+RestartSec=3
 StartLimitIntervalSec=0
 ```
 This ensures:
