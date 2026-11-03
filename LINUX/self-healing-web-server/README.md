@@ -1,111 +1,243 @@
-# CloudPros Self-Healing Linux Web Service Deployment
+# Self-Healing Linux Web Server
 
-Automated, secure, resilient and self-healing Bash-based HTTP web service infrastructure running on Ubuntu 24.04. This repository contains configuration and automation assets designed to host a lightweight HTTP daemon via `socat`, fronted by an Nginx reverse proxy, and fully automated using native systemd structures.
+A Bash web service (`socat`) on Ubuntu 24.04, fronted by Nginx and managed by systemd. If the app crashes it restarts itself, a timer checks its health every minute, and backups and log rotation run automatically. Built and tested on an AWS EC2 instance.
 
-## Infrastructure Architecture Overview
-The service operates under a highly secure, layered environment:
-*   **Edge Proxy:** Nginx listens on public port 80 and proxies traffic internally.
-*   **Application Daemon:** A lightweight Bash script executed via `socat` on `127.0.0.1:8000`.
-*   **Security Sandboxing:** The daemon runs under an unprivileged system isolation profile (`appuser`), and the network layer is constrained via UFW to drop all external port 8000 connections.
-*   **Lifecycle Management:** System processes, timers, backups, health checks, and log lifecycles are orchestrated completely through native `systemd` and `logrotate` integrations.
+## How it fits together
 
----
+```text
+Internet -> AWS security group (22, 80) -> UFW (22, 80) -> Nginx :80 -> socat 127.0.0.1:8000 -> app.sh
+```
 
-## What Was Completed
-1.  **Privilege Separation & Hardening:** Provisions a passwordless automation account (`deploy`) and builds a non-root, shell-less isolation identity (`appuser`) for runtime operations.
-2.  **Reverse Proxy Infrastructure:** Configured Nginx to act as an edge interface, maps standard request headers (`Host`, `X-Real-IP`), and shields the upstream back-end.
-3.  **Self-Healing Application Core:** Wraps the `socat` listener in a `systemd` monitor that guarantees automatic runtime environment recovery under 10 seconds following sudden exceptions or crashes.
-4.  **Health Telemetry Loop:** Deploys a chronological checker that hits local sockets every 60 seconds via `systemd` timers, recording timestamped execution summaries inside `/var/log/cloudpros/health.log`.
-5.  **Automated Daily Backups:** Orchestrates automated daily file state consolidation (`tar.gz`) into `/var/backups/cloudpros/`, featuring integrated verification loops and a strict rolling 7-day retention prune.
-6.  **Optimised Log Lifecycle:** Integrates a custom `logrotate` definition that performs daily rotation, conditional skipping for empty files, and transparent gzip historical compression.
-7.  **Idempotent Provisioning Blueprint:** Engineers a fully encapsulated `setup.sh` automation script that securely provisions the comprehensive architecture on any fresh Ubuntu 24.04 instance.
+| Component | Role |
+|---|---|
+| Nginx | Public entry point on port 80. Forwards requests to the app. |
+| socat + `app.sh` | The web service. Listens on `127.0.0.1:8000` and returns `CloudPros Server Running`. |
+| systemd | Runs the app, restarts it on failure, and schedules the health check and backups. |
+| UFW and AWS security group | Allow only SSH (22) and HTTP (80). Port 8000 is never opened. |
+| logrotate | Rotates `/var/log/cloudpros/*.log`. |
 
----
+## Repository layout
 
-## Deployment & Usage
+```text
+self-healing-web-server/
+├── README.md
+├── setup.sh                         # installs and configures everything below
+├── app/
+│   └── server.sh                    # HTTP response script
+├── systemd/
+│   ├── cloudpros-app.service
+│   ├── cloudpros-healthcheck.service
+│   ├── cloudpros-healthcheck.timer
+│   ├── cloudpros-backup.service
+│   └── cloudpros-backup.timer
+├── nginx/
+│   └── cloudpros.conf               # reverse proxy config
+├── scripts/
+│   ├── healthcheck.sh
+│   └── cloudpros-backup.sh
+├── logrotate/
+│   └── cloudpros                    # log rotation config
+└── evidence/                        # screenshots
+```
 
-### Prerequisites
-*   A clean instance running **Ubuntu 24.04 LTS**.
-*   Active root or `sudo` privilege access during execution.
-*   Internet connectivity to pull standard distribution mirror packages.
+`setup.sh` writes the app, scripts, units and configs itself, so the other files are readable copies of what it installs. If you change one, change the other.
 
-### Automated Installation
-To execute the idempotent environmental build, clone this asset collection to your machine and run:
+## Setup and reproduction
+
+### 1. Launch the instance
+
+- Ubuntu Server 24.04 LTS AMI, with a key pair.
+- Security group: inbound **22** and **80** only. Do not add 8000.
+
+### 2. Create the `deploy` user (manual)
+
+`setup.sh` does not touch users that log in over SSH. Create `deploy` by hand while logged in as `ubuntu`:
+
 ```bash
-chmod +x setup.sh
+# Create the user with a home directory and bash shell
+sudo useradd -m -s /bin/bash deploy
+
+# Reuse the ubuntu user's SSH key
+sudo mkdir /home/deploy/.ssh
+sudo cp -r /home/ubuntu/.ssh /home/deploy/
+sudo chown -R deploy:deploy /home/deploy/.ssh
+sudo chmod 700 /home/deploy/.ssh
+sudo chmod 600 /home/deploy/.ssh/authorized_keys
+
+# Grant sudo
+sudo usermod -aG sudo deploy
+```
+
+Then verify:
+
+```bash
+sudo su - deploy      # switch to deploy
+id deploy             # confirms membership of the sudo group
+sudo -l -U deploy     # lists deploy's sudo privileges
+```
+
+In a **second terminal**, confirm `ssh -i <key>.pem deploy@<EC2_PUBLIC_IP>` works before closing your original session.
+
+`sudo visudo` was used to edit sudoers rules for `deploy` (see Challenges). `id deploy` in the evidence below confirms `deploy` exists and is in the `sudo` group.
+
+### 3. Deploy
+
+```bash
+git clone <REPO_URL>
+cd <REPO_DIR>/LINUX/self-healing-web-server
 sudo ./setup.sh
 ```
 
----
+`setup.sh` is safe to re-run. It:
 
-## Verification & Testing Manifest
+1. Installs `socat`, `nginx`, `ufw`, `curl`, `logrotate`.
+2. Creates `appuser`, a system user with no home and no login shell.
+3. Creates `/opt/cloudpros`, `/var/backups/cloudpros`, `/var/log/cloudpros` and writes `app.sh`.
+4. Installs `/usr/local/bin/healthcheck.sh` and `/usr/local/bin/cloudpros-backup.sh`.
+5. Writes the systemd units, then enables and starts the app service and both timers.
+6. Writes the Nginx site config, tests it with `nginx -t`, and restarts Nginx.
+7. Writes `/etc/logrotate.d/cloudpros`.
+8. Configures UFW: deny incoming, allow outgoing, allow ssh, allow http, enable.
 
-### 1. Reverse Proxy Traffic Routing
-Verify that public edge connections successfully handshake with the internal daemon framework:
+## How the app and Nginx work together
+
+`socat` listens on `127.0.0.1:8000` and runs `app.sh` for each connection (`fork`). The script prints a valid HTTP/1.1 `200 OK` with a `Content-Length`, then closes the connection. The service runs as `appuser`, not root.
+
+Nginx listens on port 80 and `proxy_pass`es everything to `http://127.0.0.1:8000`. It passes `Host`, `X-Real-IP`, `X-Forwarded-For` and `X-Forwarded-Proto` so the app can see the original request details. Because the app is bound to localhost, the only way in from outside is through Nginx.
+
+## How systemd handles recovery
+
+`cloudpros-app.service` sets:
+
+```ini
+Restart=always
+RestartSec=5s
+```
+
+If the process dies for any reason, including `kill -9`, systemd waits 5 seconds and starts it again with a new PID. That is inside the 10-second requirement. The service is enabled, so it also starts on boot.
+
+## How health monitoring works
+
+`cloudpros-healthcheck.timer` runs `cloudpros-healthcheck.service` one minute after boot and then every minute (`OnUnitActiveSec=1min`). The service runs `/usr/local/bin/healthcheck.sh`, which:
+
+1. Requests `http://127.0.0.1:8000` with `curl` and a 5-second timeout.
+2. If the status is 200, logs `HEALTH CHECK PASSED`.
+3. Otherwise logs `HEALTH CHECK FAILED`, runs `systemctl restart cloudpros-app.service`, and logs whether recovery succeeded.
+
+Every line is timestamped in `/var/log/cloudpros/health.log`. The check runs as a systemd service (root), so it can restart the app without a sudoers rule. No cron is used.
+
+The two recovery paths are complementary. `Restart=always` handles a crashed process in about 5 seconds. The health check handles a process that is running but not answering correctly.
+
+## How backups and log rotation are configured
+
+### Backups
+
+`cloudpros-backup.timer` runs daily (`OnCalendar=daily`, `Persistent=true` so a missed run happens after boot). It runs `/usr/local/bin/cloudpros-backup.sh`, which:
+
+1. Creates `/var/backups/cloudpros/cloudpros-YYYY-MM-DD.tar.gz` from `/opt/cloudpros`.
+2. Verifies it with `tar -tzf`. On failure it deletes the archive and exits non-zero.
+3. Deletes backups older than 7 days (`find ... -mtime +7 -delete`).
+
+### Log rotation
+
+`/etc/logrotate.d/cloudpros` applies to `/var/log/cloudpros/*.log`:
+
+| Setting | Effect |
+|---|---|
+| `daily` | Rotate every day |
+| `rotate 7` | Keep seven rotated logs |
+| `compress`, `delaycompress` | Gzip old logs, leaving the most recent rotation uncompressed |
+| `missingok` | No error if the log is missing |
+| `notifempty` | Skip empty logs |
+| `create 0640 appuser appuser` | Recreate the log with these permissions |
+
+## Verification and evidence
+
+### Secure access
+
+`deploy` has sudo and `appuser` has no login shell:
+
+![users](./evidence/Screenshot%202026-11-02%20at%2022.01.43.png)
+
+Commands used to create `deploy`:
+
+![deploy-commands](./evidence/Image%2031-10-2026%20at%2016.24.PNG)
+
+Logged in as `deploy`, in the `sudo` group, and `sudo` works:
+
+![deploy-sudo](./evidence/Screenshot%202026-11-03%20at%2000.21.35.png)
+
+### HTTP through Nginx
+
 ```bash
 curl -i http://127.0.0.1
 ```
-*Expected Response:*
-```text
-HTTP/1.1 200 OK
-Server: nginx/...
-Content-Type: text/plain
 
-CloudPros Server Running
-```
-![Curl_results](./evidence/Screenshot%202026-11-02%20at%2021.42.13.png)
+![curl](./evidence/Screenshot%202026-11-02%20at%2021.42.13.png)
 
-Result when testing port 8000 from using public IP
+### Port 8000 is not reachable from outside
+
+From a machine outside the instance, `curl --connect-timeout 5 http://<EC2_PUBLIC_IP>:8000` fails:
+
 ![public-access](./evidence/Screenshot%202026-11-02%20at%2021.43.53.png)
 
-### 2. Network Isolation Verification
-Ensure that port 8000 is securely contained and strictly unexposed to outer network boundaries:
+### Firewall and listening address
+
 ```bash
 sudo ufw status verbose
-sudo ss -tulpn | grep :8000
+sudo ss -ltnp | grep :8000
 ```
-*Verification Profile:* UFW default incoming will match `deny`, and the application bind point will target localhost interfaces (`127.0.0.1`) explicitly.
+
+The app is bound to `127.0.0.1:8000`, not `0.0.0.0`.
 
 ![ufw](./evidence/Screenshot%202026-11-02%20at%2021.32.41.png)
 
-![ss -tulpn](./evidence/Screenshot%202026-11-02%20at%2021.44.50.png)
+![ss](./evidence/Screenshot%202026-11-02%20at%2021.44.50.png)
 
-### 3. Recovery Test
-Simulate a catastrophic application runtime failure by forcefully killing the application wrapper's process ID:
+### Recovery test
+
 ```bash
-# Locate active MainPID
 systemctl show --property=MainPID cloudpros-app.service
-
-# Forcefully kill the active process
 sudo kill -9 <MainPID>
-
-# Check application recovery status 5 seconds later
 sudo systemctl status cloudpros-app.service
 ```
-*Verification Profile:* The service immediately transitions back into an `active (running)` state under a completely new, clean Process ID (PID).
+
+Original PID:
 
 ![pid](./evidence/Screenshot%202026-11-02%20at%2021.27.40.png)
 
+New PID, service active again:
+
 ![recovery](./evidence/Screenshot%202026-11-02%20at%2021.31.48.png)
 
-### 4. Scheduler Automation Status
-Verify that background infrastructure monitors are active, tracking accurately, and waiting for upcoming triggers:
+### Timers
+
 ```bash
 sudo systemctl list-timers --all | grep cloudpros
 ```
-![Cloudpros-timer](./evidence/Screenshot%202026-11-02%20at%2021.38.44.png)
 
-### 4. Log Rotation check
-Ensure logrotate is configured correctly
+![timers](./evidence/Screenshot%202026-11-02%20at%2021.38.44.png)
+
+### Log rotation
+
 ```bash
 sudo logrotate -d /etc/logrotate.d/cloudpros
 ```
-*Verification Profile:* Log rotation configuration should be displayed correctly.
 
 ![logrotate](./evidence/Screenshot%202026-11-02%20at%2021.55.36.png)
 
----
+### Backups
 
-## Challenges & Core Takeaways
-*   **Systemd Timer Synchronization Patterns:** Systemd timer units require careful architecture alignment; they rely on an explicitly structured name association with their target `.service` unit or definitive `Unit=` attribute assignments to execute tasks reliably.
-*   **Sequential Sudoers Parsing Topologies:** Linux processes `sudoers` rule structures strictly from top to bottom. Specific override privileges (such as `NOPASSWD` entries) must always reside at the absolute bottom of configuration definitions to prevent generic system group mappings from overriding individual access profiles.
+```bash
+sudo systemctl start cloudpros-backup.service
+ls -l /var/backups/cloudpros/                      # dated filename
+tar -tzf /var/backups/cloudpros/cloudpros-$(date +%F).tar.gz   # extraction test
+```
+
+![backups](./evidence/Screenshot%202026-11-02%20at%2023.55.18.png)
+
+## Challenges and how I resolved them
+
+- **Timer did not run its task.** A `.timer` only triggers a unit it is linked to. I linked each timer to its service with `Unit=` and matching names, then confirmed with `systemctl list-timers`.
+- **Sudo rule ignored.** sudoers is read top to bottom and the last match wins, so a `NOPASSWD` line placed above a generic group rule was overridden. Moving it to the bottom fixed it.
+- **Port 8000 exposure.** Rather than relying only on UFW, I bound socat to `127.0.0.1` and left 8000 out of the security group, so it is blocked at three levels.
