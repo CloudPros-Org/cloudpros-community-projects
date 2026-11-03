@@ -20,4 +20,3 @@ fi
 exec socat \
     TCP-LISTEN:8000,bind=127.0.0.1,reuseaddr,fork \
     EXEC:"/bin/bash /opt/cloudpros/server.sh --respond"
-EOF
