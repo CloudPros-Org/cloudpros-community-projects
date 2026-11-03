@@ -83,8 +83,8 @@ In a **second terminal**, confirm `ssh -i <key>.pem deploy@<EC2_PUBLIC_IP>` work
 ### 3. Deploy
 
 ```bash
-git clone <REPO_URL>
-cd <REPO_DIR>/LINUX/self-healing-web-server
+git clone -b feat/self-healing-web-server-ko git@github.com:kevlar2/cloudpros-community-projects.git
+cd cloudpros-community-projects/LINUX/self-healing-web-server
 sudo ./setup.sh
 ```
 
@@ -226,6 +226,10 @@ sudo logrotate -d /etc/logrotate.d/cloudpros
 
 ![logrotate](./evidence/Screenshot%202026-11-02%20at%2021.55.36.png)
 
+The installed configuration:
+
+![logrotate-config](./evidence/Screenshot%202026-11-03%20at%2000.28.59.png)
+
 ### Backups
 
 ```bash
@@ -235,6 +239,10 @@ tar -tzf /var/backups/cloudpros/cloudpros-$(date +%F).tar.gz   # extraction test
 ```
 
 ![backups](./evidence/Screenshot%202026-11-02%20at%2023.55.18.png)
+
+Extraction test: `tar -tzf` lists the archive contents without error.
+
+![backup-extraction-test](./evidence/Screenshot%202026-11-03%20at%2000.29.43.png)
 
 ## Challenges and how I resolved them
 
