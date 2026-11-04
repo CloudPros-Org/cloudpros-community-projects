@@ -19,7 +19,7 @@ Internet -> AWS security group (22, 80) -> UFW (22, 80) -> Nginx :80 -> socat 12
 ## Repository layout
 
 ```text
-self-healing-web-server/
+LINUX/self-healing-web-server/submissions/kevlar2/
 ├── README.md
 ├── setup.sh                         # installs and configures everything below
 ├── app/
@@ -84,7 +84,7 @@ In a **second terminal**, confirm `ssh -i <key>.pem deploy@<EC2_PUBLIC_IP>` work
 
 ```bash
 git clone -b feat/self-healing-web-server-ko git@github.com:kevlar2/cloudpros-community-projects.git
-cd cloudpros-community-projects/LINUX/self-healing-web-server
+cd cloudpros-community-projects/LINUX/self-healing-web-server/submissions/kevlar2
 sudo ./setup.sh
 ```
 
