@@ -1,0 +1,20 @@
+=== LOGROTATE CONFIGURATION ===
+/var/log/cloudpros/*.log {
+    daily
+    rotate 7
+    compress
+    delaycompress
+    missingok
+    notifempty
+    copytruncate
+}
+
+=== LOGROTATE VALIDATION ===
+
+=== CURRENT LOG FILES ===
+total 24K
+drwxr-x---  2 appuser appuser 4.0K Nov  4 04:11 .
+drwxrwxr-x 10 root    syslog  4.0K Nov  4 04:40 ..
+-rw-r--r--  1 root    root    6.5K Nov  4 05:03 app.log
+-rw-r--r--  1 root    root     407 Nov  4 03:42 app.log.1
+-rw-r--r--  1 root    root    2.3K Nov  4 05:03 healthcheck.log

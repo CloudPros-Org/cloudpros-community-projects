@@ -1,0 +1,25 @@
+=== FIREWALL ===
+Status: active
+Logging: on (low)
+Default: deny (incoming), allow (outgoing), disabled (routed)
+New profiles: skip
+
+To                         Action      From
+--                         ------      ----
+22/tcp (OpenSSH)           ALLOW IN    Anywhere
+80/tcp                     ALLOW IN    Anywhere
+22/tcp (OpenSSH (v6))      ALLOW IN    Anywhere (v6)
+80/tcp (v6)                ALLOW IN    Anywhere (v6)
+
+
+=== SSH HARDENING ===
+permitrootlogin no
+pubkeyauthentication yes
+passwordauthentication no
+kbdinteractiveauthentication no
+
+=== DEPLOY USER ===
+uid=1001(deploy) gid=1001(deploy) groups=1001(deploy),27(sudo),100(users)
+
+=== APPLICATION USER ===
+uid=106(appuser) gid=108(appuser) groups=108(appuser)

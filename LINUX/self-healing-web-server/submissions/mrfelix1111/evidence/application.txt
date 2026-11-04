@@ -1,0 +1,17 @@
+=== HTTP RESPONSE THROUGH NGINX ===
+HTTP/1.1 200 OK
+Server: nginx/1.24.0 (Ubuntu)
+Date: Wed, 04 Nov 2026 04:56:33 GMT
+Content-Type: text/plain
+Content-Length: 24
+Connection: keep-alive
+
+CloudPros Server Running
+=== LISTENING PORTS ===
+LISTEN 0      5           127.0.0.1:8000      0.0.0.0:*    users:(("socat",pid=784,fd=5))
+LISTEN 0      511           0.0.0.0:80        0.0.0.0:*    users:(("nginx",pid=271,fd=5),("nginx",pid=269,fd=5),("nginx",pid=267,fd=5),("nginx",pid=266,fd=5),("nginx",pid=265,fd=5),("nginx",pid=264,fd=5),("nginx",pid=263,fd=5),("nginx",pid=262,fd=5),("nginx",pid=261,fd=5),("nginx",pid=260,fd=5),("nginx",pid=258,fd=5),("nginx",pid=257,fd=5),("nginx",pid=256,fd=5))
+LISTEN 0      511              [::]:80           [::]:*    users:(("nginx",pid=271,fd=6),("nginx",pid=269,fd=6),("nginx",pid=267,fd=6),("nginx",pid=266,fd=6),("nginx",pid=265,fd=6),("nginx",pid=264,fd=6),("nginx",pid=263,fd=6),("nginx",pid=262,fd=6),("nginx",pid=261,fd=6),("nginx",pid=260,fd=6),("nginx",pid=258,fd=6),("nginx",pid=257,fd=6),("nginx",pid=256,fd=6))
+
+=== SERVICE STATUS ===
+active
+active
