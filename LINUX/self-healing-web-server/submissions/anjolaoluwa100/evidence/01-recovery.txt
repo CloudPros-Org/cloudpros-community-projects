@@ -1,0 +1,29 @@
+Fri Oct 30 20:42:32 CDT 2026
+● cloudpros-app.service - CloudPros demo web app
+     Loaded: loaded (/etc/systemd/system/cloudpros-app.service; enabled; preset: enabled)
+     Active: active (running) since Fri 2026-10-30 18:37:23 CDT; 2h 5min ago
+   Main PID: 265362 (socat)
+      Tasks: 1 (limit: 1056)
+     Memory: 668.0K (peak: 1.5M)
+        CPU: 286ms
+     CGroup: /system.slice/cloudpros-app.service
+             └─265362 socat TCP-LISTEN:8000,bind=127.0.0.1,reuseaddr,fork "EXEC:/opt/cloudpros/server.sh respond"
+
+Oct 30 18:37:20 cloudpros systemd[1]: cloudpros-app.service: Failed with result 'signal'.
+Oct 30 18:37:23 cloudpros systemd[1]: cloudpros-app.service: Scheduled restart job, restart counter is at 1.
+Oct 30 18:37:23 cloudpros systemd[1]: Started cloudpros-app.service - CloudPros demo web app.
+Fri Oct 30 20:42:37 CDT 2026
+● cloudpros-app.service - CloudPros demo web app
+     Loaded: loaded (/etc/systemd/system/cloudpros-app.service; enabled; preset: enabled)
+     Active: active (running) since Fri 2026-10-30 20:42:35 CDT; 1s ago
+   Main PID: 383952 (socat)
+      Tasks: 1 (limit: 1056)
+     Memory: 676.0K (peak: 1.2M)
+        CPU: 24ms
+     CGroup: /system.slice/cloudpros-app.service
+             └─383952 socat TCP-LISTEN:8000,bind=127.0.0.1,reuseaddr,fork "EXEC:/opt/cloudpros/server.sh respond"
+
+Oct 30 20:42:32 cloudpros systemd[1]: cloudpros-app.service: Main process exited, code=killed, status=9/KILL
+Oct 30 20:42:32 cloudpros systemd[1]: cloudpros-app.service: Failed with result 'signal'.
+Oct 30 20:42:35 cloudpros systemd[1]: cloudpros-app.service: Scheduled restart job, restart counter is at 2.
+Oct 30 20:42:35 cloudpros systemd[1]: Started cloudpros-app.service - CloudPros demo web app.
