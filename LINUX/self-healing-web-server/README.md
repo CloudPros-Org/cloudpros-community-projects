@@ -163,9 +163,79 @@ Commands used to create `deploy`:
 
 ![deploy-commands](./evidence/Image%2031-10-2026%20at%2016.24.PNG)
 
-Logged in as `deploy`, in the `sudo` group, and `sudo` works:
+Switched to `deploy` locally from `ubuntu`; `deploy` is in the `sudo` group and `sudo` works:
 
 ![deploy-sudo](./evidence/Screenshot%202026-11-03%20at%2000.21.35.png)
+
+Remote SSH login as `deploy` with the key pair, from my laptop:
+
+```bash
+ssh -i <key>.pem deploy@<EC2_PUBLIC_IP>
+```
+
+![deploy-ssh-login](./evidence/ssh-deploy-login.png)
+
+Once logged in, `whoami` and `id` confirm the account and its `sudo` group, and `sudo -n true` succeeding confirms `sudo` works:
+
+```bash
+whoami && id && sudo -n true && echo "sudo ok"
+```
+
+![deploy-whoami-sudo](./evidence/ssh-deploy-whoami-sudo.png)
+
+### Root SSH access
+
+Root is not used for administration. I disabled direct root login over SSH in two steps.
+
+**Before hardening.** I tried to log in as `root` with the key pair that works for `ubuntu`:
+
+```bash
+ssh -i <key>.pem root@<EC2_PUBLIC_IP>
+```
+
+The connection was refused with `Please login as the user "ubuntu" rather than the user "root".` That message comes from the forced command AWS places in `root`'s `authorized_keys` on Ubuntu AMIs. At that point sshd itself still reported `permitrootlogin prohibit-password`, meaning root could not use a password, but blocking key login depended on the AWS forced command rather than on my configuration:
+
+![root-blocked-before](./evidence/ssh-root-login-blocked-before-hardening.png)
+
+**Hardening.** I made the block explicit in sshd with a drop-in file, so it no longer relies on the AMI's `authorized_keys` entry:
+
+```bash
+echo "PermitRootLogin no" | sudo tee /etc/ssh/sshd_config.d/99-hardening.conf
+sudo sshd -t && sudo systemctl reload ssh
+sudo sshd -T | grep -Ei 'passwordauthentication|permitrootlogin|pubkeyauthentication'
+```
+
+`sshd -t` validates the config before reloading, and `sshd -T` shows the effective settings after all drop-ins are applied:
+
+![hardening-applied](./evidence/ssh-hardening-dropin-applied.png)
+
+**After hardening.** The same root login attempt is now rejected by sshd itself:
+
+![root-denied-after](./evidence/ssh-root-login-denied-after-hardening.png)
+
+### SSH daemon configuration
+
+Effective settings after hardening:
+
+| Setting | Value | Meaning |
+|---|---|---|
+| `passwordauthentication` | `no` | Passwords are never accepted |
+| `pubkeyauthentication` | `yes` | SSH keys are the only way in |
+| `permitrootlogin` | `no` | Root cannot log in over SSH at all |
+
+Before the change, the same command showed `permitrootlogin prohibit-password`:
+
+![sshd-config-before](./evidence/ssh-sshd-config-before-hardening.png)
+
+Forcing password authentication off from the client confirms `deploy` is key-only:
+
+```bash
+ssh -o PubkeyAuthentication=no deploy@<EC2_PUBLIC_IP>
+# deploy@<EC2_PUBLIC_IP>: Permission denied (publickey).
+```
+
+![password-denied](./evidence/ssh-password-login-denied.png)
+
 
 ### HTTP through Nginx
 
