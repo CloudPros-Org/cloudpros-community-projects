@@ -1,14 +1,27 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -u
 
-LOGFILE="/var/log/cloudpros/health.log"
-TIMESTAMP=$(date +"%Y-%m-%d %H:%M:%S")
+LOG_DIR="/var/log/cloudpros"
+LOG_FILE="$LOG_DIR/healthcheck.log"
+URL="http://127.0.0.1:8000"
 
-# Check application health
-HTTP_RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:8000)
+mkdir -p "$LOG_DIR"
 
-if [ "$HTTP_RESPONSE" -eq 200 ]; then
-    echo "$TIMESTAMP - HEALTHY (HTTP $HTTP_RESPONSE)" >> "$LOGFILE"
+log() {
+    printf '%s - %s\n' "$(date '+%Y-%m-%d %H:%M:%S')" "$1" \
+        >> "$LOG_FILE"
+}
+
+if curl --silent --fail --max-time 5 "$URL" >/dev/null; then
+    log "HEALTHY: Application returned HTTP success"
 else
-    echo "$TIMESTAMP - UNHEALTHY (HTTP $HTTP_RESPONSE) - Restarting cloudpros-app" >> "$LOGFILE"
-    systemctl restart cloudpros-app
+    log "UNHEALTHY: Application check failed; restarting service"
+
+    if systemctl restart cloudpros-app; then
+        log "RECOVERY: Restart command completed"
+    else
+        log "ERROR: Failed to restart cloudpros-app"
+        exit 1
+    fi
 fi
+

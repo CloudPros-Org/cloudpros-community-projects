@@ -1,5 +1,5 @@
 [Unit]
-Description=Run CloudPros Backup Daily
+Description=Daily CloudPros Application Backup
 
 [Timer]
 OnCalendar=daily

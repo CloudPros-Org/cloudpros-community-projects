@@ -4,5 +4,6 @@
     compress
     missingok
     notifempty
-    create 644 root root
+    dateext
+    create 0640 root root
 }

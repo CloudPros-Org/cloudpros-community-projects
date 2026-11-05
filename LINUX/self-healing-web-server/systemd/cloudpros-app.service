@@ -1,5 +1,6 @@
+
 [Unit]
-Description=CloudPros Web Service
+Description=CloudPros Self-Healing Web Application
 After=network.target
 
 [Service]
@@ -7,10 +8,9 @@ Type=simple
 User=appuser
 Group=appuser
 ExecStart=/opt/cloudpros/server.sh
-Restart=always
-RestartSec=3
-StartLimitIntervalSec=0
-WorkingDirectory=/opt/cloudpros
+Restart=on-failure
+RestartSec=2
 
 [Install]
 WantedBy=multi-user.target
+

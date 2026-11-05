@@ -1,292 +1,311 @@
-# CloudPros Self‑Healing Web Server
-A fully automated, self‑healing Linux web service featuring:
+# Self-Healing Linux Web Server
 
-- Nginx reverse proxy
+## About the project
 
-- systemd‑managed backend
+For this project, I set up a Linux web server that can recover from application failures and handle routine maintenance automatically.
 
-- automatic crash recovery
+I used Bash and `socat` for the application, systemd to manage the service, and Nginx as a reverse proxy. I also configured UFW, scheduled health checks, daily backups, and log rotation.
 
-- health monitoring
+The goal was to make the server easier to manage, reduce manual intervention, and keep the application running when a process fails.
 
-- daily backups
+## How it works
 
-- log rotation
+When a user sends an HTTP request, Nginx receives it on port 80 and forwards it to the application listening on `127.0.0.1:8000`.
 
-- clean, reproducible setup
+Systemd manages the application and restarts it if it exits unexpectedly. A separate timer runs the health-check service every minute, while another schedules daily backups. Old backups are removed after seven days, and logrotate handles log retention.
 
-This project demonstrates how to build a resilient, production‑grade service using only standard Linux tools.
+## Tools used
 
-## 📦 Project Overview
-CloudPros is a lightweight HTTP service running on port 8000, fronted by Nginx on port 80.
-The backend is powered by socat and a simple response script, while systemd ensures the service automatically restarts after crashes.
+- **Bash and socat:** Run a simple HTTP server.
+- **systemd:** Manage the application and schedule maintenance jobs.
+- **Nginx:** Forward incoming HTTP requests to the application.
+- **UFW:** Control incoming network traffic.
+- **tar and gzip:** Create compressed backups and verify their contents.
+- **logrotate:** Rotate and compress logs.
 
-Additional components include:
+## Project structure
 
-- Health monitoring (systemd timer + Bash script)
+```text
+self-healing-web-server/
+├── app/
+│   └── server.sh
+├── systemd/
+│   ├── cloudpros-app.service
+│   ├── cloudpros-healthcheck.service
+│   ├── cloudpros-healthcheck.timer
+│   ├── cloudpros-backup.service
+│   └── cloudpros-backup.timer
+├── nginx/
+│   └── cloudpros.conf
+├── scripts/
+│   ├── healthcheck.sh
+│   └── backup.sh
+├── logrotate/
+│   └── cloudpros
+├── evidence/
+├── README.md
+└── task.md
+```
 
-- Automated backups (systemd timer + tar archives)
+## Setup
 
-- Log rotation (logrotate)
+These instructions assume you are running Ubuntu and have sudo access.
 
-The result is a fully self‑healing Linux web server.
-
-## 🚀 Project Setup
-1.    Install project files
-Place your application under:
+### 1. Install the required packages
 
 ```bash
-/opt/cloudpros/
+sudo apt update
+sudo apt install -y nginx socat ufw tar gzip logrotate
 ```
-This directory contains:
 
-- server.sh — launches socat
+### 2. Create the application user and directories
 
-- response.sh — returns HTTP responses
-
-- any supporting files
-
-### Ensure scripts are executable:
+I used a separate system account for the application instead of running it as root.
 
 ```bash
-sudo chmod +x /opt/cloudpros/*.sh
+sudo useradd --system --user-group \
+  --home-dir /nonexistent \
+  --shell /usr/sbin/nologin appuser
+
+sudo install -d -o root -g root -m 0755 /opt/cloudpros
+sudo install -d -o root -g root -m 0755 /var/backups/cloudpros
+sudo install -d -o root -g root -m 0755 /var/log/cloudpros
 ```
 
+If `appuser` already exists, check it with `id appuser` rather than creating it again.
 
-
-## 🌐 How Nginx Works With the Application
-Nginx listens on port 80 and proxies all incoming HTTP traffic to the backend service on 127.0.0.1:8000.
-
-Example Nginx configuration:
-
-```nginx
-server {
-    listen 80;
-    server_name _;
-
-    location / {
-        proxy_pass http://127.0.0.1:8000;
-
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-    }
-}
-```
-This ensures:
-
-- The backend is never exposed directly
-
-- Nginx handles connection management
-
-- The service behaves like a standard web server
-
-## 🔁 How systemd Handles Application Recovery
-The backend is managed by a systemd service:
+### 3. Install the application
 
 ```bash
-/etc/systemd/system/cloudpros-app.service
-```
-Key directives:
+sudo install -o root -g root -m 0755 \
+  app/server.sh /opt/cloudpros/server.sh
 
-```Code
-Restart=always
-RestartSec=3
-StartLimitIntervalSec=0
-```
-This ensures:
-
-- The service restarts automatically after crashes
-
-- Recovery happens within 10 seconds
-
-- kill -9 triggers a restart
-
-- A new PID is assigned after recovery
-
-This is the core of the self‑healing behavior.
-
-## ❤️ Health Monitoring
-A health check script runs every minute:
-
-```Code
-/usr/local/bin/healthcheck.sh
-```
-It:
-
-- Sends an HTTP request to 127.0.0.1:8000
-
-- Logs the result to /var/log/cloudpros/health.log
-
-- Restarts the service if the response is not 200 OK
-
-Systemd timer:
-
-```Code
-/etc/systemd/system/cloudpros-health.timer
-```
-Runs the health check every minute:
-
-```Code
-OnUnitActiveSec=60s
-Unit=cloudpros-health.service
-```
-This ensures the service recovers even if systemd fails to detect a crash.
-
-## 🗄 Automated Backups
-Daily backups are created using:
-
-```Code
-/usr/local/bin/cloudpros-backup.sh
-```
-Backups are stored in:
-
-```Code
-/var/backups/cloudpros/
-```
-Backup filenames include the date:
-
-```Code
-cloudpros-YYYY-MM-DD.tar.gz
-```
-The script:
-
-- Creates a compressed tarball
-
-- Verifies the archive
-
-- Deletes backups older than 7 days
-
-- Logs results to /var/log/cloudpros/backup.log
-
-A systemd timer runs the backup daily:
-
-```Code
-OnCalendar=daily
+bash -n app/server.sh
+diff -u app/server.sh /opt/cloudpros/server.sh
 ```
 
-## 🌀 Log Rotation
-Log rotation is configured via:
+The syntax check should complete without errors, and the comparison should produce no output when the two scripts match.
 
-```Code
-/etc/logrotate.d/cloudpros
-```
+### 4. Configure systemd
 
-It rotates:
-
-```Code
-/var/log/cloudpros/*.log
-```
-Settings:
-
-- Rotate daily
-
-- Keep 7 days
-
-- Compress old logs
-
-- Skip empty or missing logs
-
-This prevents uncontrolled log growth.
-
-## 🔧 Reproducing the Setup
-Anyone can reproduce this environment by following these steps:
-
-- Install project files into /opt/cloudpros/
-
-- Create the systemd service (cloudpros-app.service)
-
-- Enable and start the service
-
-- Install Nginx and configure the reverse proxy
-
-- Create the health check script + timer
-
-- Create the backup script + timer
-
-- Configure logrotate
-
-- Reload systemd and enable all timers
-
-Commands:
+Install the application service:
 
 ```bash
+sudo install -o root -g root -m 0644 \
+  systemd/cloudpros-app.service \
+  /etc/systemd/system/cloudpros-app.service
+```
+
+Install the maintenance scripts:
+
+```bash
+sudo install -o root -g root -m 0755 \
+  scripts/healthcheck.sh /usr/local/bin/healthcheck.sh
+
+sudo install -o root -g root -m 0755 \
+  scripts/backup.sh /usr/local/bin/cloudpros-backup.sh
+```
+
+Install the health-check and backup service and timer files:
+
+```bash
+sudo install -m 0644 systemd/cloudpros-healthcheck.service \
+  /etc/systemd/system/cloudpros-healthcheck.service
+
+sudo install -m 0644 systemd/cloudpros-healthcheck.timer \
+  /etc/systemd/system/cloudpros-healthcheck.timer
+
+sudo install -m 0644 systemd/cloudpros-backup.service \
+  /etc/systemd/system/cloudpros-backup.service
+
+sudo install -m 0644 systemd/cloudpros-backup.timer \
+  /etc/systemd/system/cloudpros-backup.timer
+
 sudo systemctl daemon-reload
-sudo systemctl enable cloudpros-app
-sudo systemctl start cloudpros-app
-
-sudo systemctl enable cloudpros-health.timer
-sudo systemctl start cloudpros-health.timer
-
-sudo systemctl enable cloudpros-backup.timer
-sudo systemctl start cloudpros-backup.timer
+sudo systemctl enable --now cloudpros-app
+sudo systemctl enable --now cloudpros-healthcheck.timer
+sudo systemctl enable --now cloudpros-backup.timer
 ```
-After this, the system becomes fully self‑healing.
 
-## ⚠️ Challenges & How They Were Solved
-1. socat restart storm
-Systemd kept spawning socat repeatedly, causing:
+Before starting the timers, check that the `ExecStart` paths in the service files match where the scripts were installed.
 
-- Port 8000 to stay locked
+### 5. Configure Nginx
 
-- Nginx to hang
+```bash
+sudo install -m 0644 nginx/cloudpros.conf \
+  /etc/nginx/sites-available/cloudpros
 
-- Multiple socat processes
+sudo ln -sfn /etc/nginx/sites-available/cloudpros \
+  /etc/nginx/sites-enabled/cloudpros
 
-Solution:
-Stop the service, kill all socat processes, fix the systemd restart configuration.
+sudo rm -f /etc/nginx/sites-enabled/default
 
-2. Nginx hanging with no response
-Curl showed:
-
-```Code
-Connected... but no response
+sudo nginx -t
+sudo systemctl enable --now nginx
+sudo systemctl reload nginx
 ```
-Cause:
-Backend was failing, so Nginx had nothing to proxy.
 
-Solution:
-Fix backend stability + systemd restart loop.
+Nginx should listen on port 80 and forward requests to `127.0.0.1:8000`.
 
-3. Health checks not triggering
-Early versions didn’t restart the service correctly.
+### 6. Configure UFW
 
-Solution:
-Use ```systemctl restart cloudpros-app``` inside the health script.
+I configured the firewall to deny incoming connections by default and allow outgoing connections.
 
-4. Log growth
-Logs grew indefinitely.
+```bash
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+sudo ufw allow 22/tcp
+sudo ufw allow 80/tcp
+sudo ufw enable
+sudo ufw status verbose
+```
 
-Solution:
-Add logrotate with daily rotation + compression.
+Only SSH and HTTP should be externally accessible. Port 8000 is intended for local application traffic, so it should not have an external allow rule.
 
-🔐 Security Notice
-This project does not include:
+### 7. Harden SSH
 
-Passwords
+The SSH configuration should allow public-key authentication and disable password authentication, keyboard-interactive authentication, and root login.
 
-Private SSH keys
+The settings in `/etc/ssh/sshd_config.d/99-cloudpros.conf` are:
 
-API tokens
+```text
+PubkeyAuthentication yes
+PasswordAuthentication no
+KbdInteractiveAuthentication no
+PermitRootLogin no
+```
 
-Secrets of any kind
+Validate the configuration before reloading SSH:
 
-Never commit sensitive information to version control.
+```bash
+sudo sshd -t
 
-## 🎉 Final Result
-A fully automated, self‑healing Linux web server with:
+sudo sshd -T | grep -E \
+  'pubkeyauthentication|passwordauthentication|kbdinteractiveauthentication|permitrootlogin'
 
-- Reverse proxy
+sudo systemctl reload ssh
+```
 
-- Crash recovery
+Keep your current SSH session open until you have confirmed that a new key-based login works.
 
-- Health monitoring
+### 8. Configure log rotation
 
-- Daily backups
+```bash
+sudo install -m 0644 logrotate/cloudpros \
+  /etc/logrotate.d/cloudpros
 
-- Log rotation
+sudo logrotate -d /etc/logrotate.d/cloudpros
+```
 
-- Reproducible setup
+The intended configuration rotates logs daily, keeps seven rotations, and compresses older logs.
 
-This is a real production‑grade architecture built entirely from standard Linux tools.
+## Testing
+
+I used the following commands to check the application, reverse proxy, firewall, timers, and backup process.
+
+### Check the application and Nginx
+
+```bash
+sudo systemctl status cloudpros-app --no-pager
+sudo systemctl status nginx --no-pager
+
+curl -i http://127.0.0.1:8000
+curl -i http://127.0.0.1
+
+sudo ss -ltnp
+```
+
+The expected result is an HTTP `200 OK` response with the body `CloudPros Server Running`. The application should listen on `127.0.0.1:8000`, while Nginx handles requests on port 80.
+
+### Test automatic recovery
+
+First, record the running process ID and make sure it is valid before stopping the process:
+
+```bash
+OLD_PID=$(sudo systemctl show cloudpros-app -p MainPID --value)
+echo "Original PID: $OLD_PID"
+
+if [[ "$OLD_PID" =~ ^[1-9][0-9]*$ ]]; then
+  sudo kill -9 "$OLD_PID"
+else
+  echo "No valid application PID. Check the service first."
+  exit 1
+fi
+
+sleep 5
+
+sudo systemctl is-active cloudpros-app
+NEW_PID=$(sudo systemctl show cloudpros-app -p MainPID --value)
+
+echo "Original PID: $OLD_PID"
+echo "New PID: $NEW_PID"
+
+sudo journalctl -u cloudpros-app -n 30 --no-pager
+curl -i http://127.0.0.1:8000
+```
+
+For this test to pass, the service must become active again, the new PID must differ from the original PID, and the application must respond successfully.
+
+### Test backup creation and verification
+
+```bash
+sudo /usr/local/bin/cloudpros-backup.sh
+
+BACKUP_FILE="/var/backups/cloudpros/cloudpros-$(date +%F).tar.gz"
+
+sudo test -s "$BACKUP_FILE"
+sudo tar -tzf "$BACKUP_FILE"
+```
+
+The archive listing should complete without errors and show files under `cloudpros/`. The backup script also needs to return a non-zero exit status if archive creation or verification fails.
+
+### Check the timers, logs, and firewall
+
+```bash
+sudo systemctl list-timers --all
+
+sudo systemctl start cloudpros-healthcheck.service
+sudo systemctl status cloudpros-healthcheck.service --no-pager
+sudo journalctl -u cloudpros-healthcheck.service -n 30 --no-pager
+
+sudo ls -lah /var/log/cloudpros/
+sudo ufw status verbose
+sudo ufw status numbered
+```
+
+## Issues I encountered
+
+One issue I ran into was the application service failing to start with systemd error `203/EXEC`. The service was configured to execute the application script, but systemd could not execute it. This prevented the application from listening on port 8000.
+
+I also received a `502 Bad Gateway` response from Nginx while the application was unavailable. This helped me understand the importance of checking the upstream service before assuming the reverse proxy itself is broken.
+
+These issues reinforced the need to validate scripts, inspect systemd logs, and test the application directly before testing the full request path through Nginx.
+
+## What I learned
+
+This project gave me more practice with Linux service management, SSH hardening, firewall rules, and systemd timers.
+
+It also reinforced a few important lessons:
+
+- Automatic restarts are useful, but they cannot fix a persistent application configuration or execution error.
+- A working Nginx configuration does not guarantee that the application behind it is healthy.
+- A backup should be verified, not just created. Running `tar -tzf` checks that the archive can be read.
+- Testing each component separately makes troubleshooting easier.
+- Evidence should show actual command output and results, rather than just the configuration.
+
+## Evidence
+
+The `evidence/` directory contains the test outputs and screenshots collected for the project. It should demonstrate:
+
+- SSH and firewall configuration
+- Successful application and Nginx responses
+- Application recovery with the original and new PIDs
+- Backup creation and archive verification
+- Health-check and timer execution
+- Logrotate validation
+
+## Conclusion
+
+The project brings together several practical Linux administration tasks in one setup. It combines a reverse-proxied application with service recovery, scheduled health checks, backup verification, and log management.
+
+The final validation results and evidence should be reviewed alongside the configuration to confirm that each component works as expected.

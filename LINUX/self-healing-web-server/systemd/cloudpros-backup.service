@@ -1,5 +1,5 @@
 [Unit]
-Description=Daily Backup for CloudPros Application
+Description=CloudPros Application Backup
 
 [Service]
 Type=oneshot

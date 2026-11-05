@@ -1,0 +1,8 @@
+
+[Unit]
+Description=CloudPros Application Health Check
+After=cloudpros-app.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/healthcheck.sh

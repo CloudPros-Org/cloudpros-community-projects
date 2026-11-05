@@ -1,0 +1,25 @@
+Original PID: 140
+New PID: 20215
+● cloudpros-app.service - CloudPros Self-Healing Web Application
+     Loaded: loaded (/etc/systemd/system/cloudpros-app.service; enabled; preset: enabled)
+     Active: active (running) since Wed 2026-11-04 00:12:38 WAT; 139ms ago
+ Invocation: 097738c81431489b8804e4bbd86124c4
+   Main PID: 20215 (socat)
+      Tasks: 1 (limit: 9408)
+     Memory: 1.1M (peak: 2.2M)
+        CPU: 34ms
+     CGroup: /system.slice/cloudpros-app.service
+             └─20215 socat TCP-LISTEN:8000,bind=127.0.0.1,reuseaddr,fork "EXEC:/bin/bash /opt/cloudpros/server.sh --respond"
+
+Nov 04 00:12:35 Malik systemd[1]: cloudpros-app.service: Failed with result 'signal'.
+Nov 04 00:12:38 Malik systemd[1]: cloudpros-app.service: Scheduled restart job, restart counter is at 1.
+Nov 04 00:12:38 Malik systemd[1]: Started cloudpros-app.service - CloudPros Self-Healing Web Application.
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0100     24 100     24   0      0   3005      0                              0100     24 100     24   0      0   2930      0                              0100     24 100     24   0      0   2894      0                              0
+HTTP/1.1 200 OK
+Content-Type: text/plain
+Content-Length: 24
+Connection: close
+
+CloudPros Server RunningPASS: Service recovered with a new PID.

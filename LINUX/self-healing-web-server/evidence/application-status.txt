@@ -1,0 +1,12 @@
+● cloudpros-app.service - CloudPros Self-Healing Web Application
+     Loaded: loaded (/etc/systemd/system/cloudpros-app.service; enabled; preset: enabled)
+     Active: active (running) since Sun 2026-11-01 19:30:00 WAT; 8min ago
+ Invocation: 83099500df434a9a835474f06f127619
+   Main PID: 6143 (socat)
+      Tasks: 1 (limit: 9410)
+     Memory: 956K (peak: 2.2M)
+        CPU: 114ms
+     CGroup: /system.slice/cloudpros-app.service
+             └─6143 socat TCP-LISTEN:8000,bind=127.0.0.1,reuseaddr,fork "EXEC:/bin/bash /opt/cloudpros/server.sh --respond"
+
+Nov 01 19:30:00 Malik systemd[1]: Started cloudpros-app.service - CloudPros Self-Healing Web Application.
