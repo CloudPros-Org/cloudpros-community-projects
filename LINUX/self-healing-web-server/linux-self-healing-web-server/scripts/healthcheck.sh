@@ -14,6 +14,6 @@ if [ "$response_code" -eq 200 ]; then
 	echo "[$TIMESTAMP] : SUCCESS $response_code" >> "/var/log/cloudpros/cloudproshealthlogs.logs"
 else  	
 	echo "[$TIMESTAMP] : FAILED $response_code" >> "/var/log/cloudpros/cloudproshealthlogs.logs"
-	systemctl restart cloud-pros.service
+	systemctl restart cloudproshealthtimer.service
 fi
 

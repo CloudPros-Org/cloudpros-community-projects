@@ -2,5 +2,5 @@
 Description=Schedule daily application backup
 
 [Service]
-Type=onshot
+Type=oneshot
 ExecStart=/usr/local/bin/backup.sh

@@ -7,7 +7,7 @@ Type=simple
 User=appuser
 Group=appuser
 WorkingDirectory=/opt/cloudpros/
-ExecStart=/usr/bin/socat TCP-LISTEN:8000,fork,reuseaddr,bind=127.0.0.1 Exec:/opt/cloudpros/cloudpros.sh
+ExecStart=/usr/bin/socat TCP-LISTEN:8000,fork,reuseaddr,bind=127.0.0.1 Exec:/opt/cloudpros/cloudpros-app.sh
 Restart=on-failure
 RestartSec=10
 
