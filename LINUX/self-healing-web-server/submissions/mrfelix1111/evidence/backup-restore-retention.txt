@@ -1,0 +1,22 @@
+=== BACKUP ARCHIVE ===
+total 4.0K
+-rw-r--r-- 1 root root 387 Nov  4 04:47 cloudpros-2026-11-04.tar.gz
+
+=== ARCHIVE CONTENTS ===
+cloudpros/
+cloudpros/server.sh
+cloudpros/respond.sh
+
+=== RESTORED FILES ===
+    42431      4 -rwxr-xr-x   1 appuser  appuser       119 Nov  4 04:06 /tmp/cloudpros-restore-test/cloudpros/server.sh
+    42434      4 -rwxr-xr-x   1 appuser  appuser       191 Nov  4 04:06 /tmp/cloudpros-restore-test/cloudpros/respond.sh
+
+=== RESTORE SYNTAX VALIDATION ===
+Both restored scripts passed.
+
+=== BACKUP TIMER ===
+enabled
+active
+
+=== BACKUP SERVICE RESULT ===
+Result=success

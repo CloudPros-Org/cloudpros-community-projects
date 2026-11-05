@@ -1,0 +1,12 @@
+[Unit]
+Description=Trigger CloudPros Backup Daily
+
+[Timer]
+Unit=cloudpros-backup.service
+# Run once every single day at midnight
+OnCalendar=daily
+# Keeps execution uniform and persistent across system reboots
+Persistent=true
+
+[Install]
+WantedBy=timers.target

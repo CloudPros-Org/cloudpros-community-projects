@@ -1,0 +1,5 @@
+total 4
+-rw-r--r-- 1 root root 547 Oct 30 18:52 cloudpros-2026-10-30.tar.gz
+
+total 4
+-rwxr-xr-x 1 root root 588 Oct 30 18:02 server.sh

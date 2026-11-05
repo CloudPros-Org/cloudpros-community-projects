@@ -1,0 +1,22 @@
+[Unit]
+Description=CloudPros Self-Healing Web Application
+After=network.target
+
+[Service]
+Type=simple
+User=appuser
+Group=appuser
+WorkingDirectory=/opt/cloudpros
+ExecStart=/opt/cloudpros/server.sh
+StandardOutput=append:/var/log/cloudpros/app.log
+StandardError=inherit
+Restart=always
+RestartSec=5
+
+NoNewPrivileges=true
+ProtectSystem=full
+ProtectHome=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
