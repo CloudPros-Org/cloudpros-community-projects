@@ -1,0 +1,9 @@
+[Unit]
+Description=Run the CloudPros backup daily
+
+[Timer]
+OnCalendar=daily
+Unit=cloudpros-backup.service
+
+[Install]
+WantedBy=timers.target

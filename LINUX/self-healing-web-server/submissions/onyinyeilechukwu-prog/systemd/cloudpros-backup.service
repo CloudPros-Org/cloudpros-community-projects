@@ -1,0 +1,6 @@
+[Unit]
+Description=CloudPros backup
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/backup.sh
