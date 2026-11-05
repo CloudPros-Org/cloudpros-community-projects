@@ -1,0 +1,7 @@
+[Unit]
+Description=CloudPros Daily Backup Service
+After=local-fs.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/cloudpros-backup

@@ -1,0 +1,39 @@
+=== PID AFTER KILL -9 ===
+Original PID: 660
+MainPID=784
+
+=== SERVICE STATUS ===
+● cloudpros-app.service - CloudPros Self-Healing Web Application
+     Loaded: loaded (/etc/systemd/system/cloudpros-app.service; enabled; preset: enabled)
+     Active: active (running) since Wed 2026-11-04 04:53:31 GMT; 1min 43s ago
+   Main PID: 784 (socat)
+      Tasks: 1 (limit: 9301)
+     Memory: 1.0M (peak: 1.9M)
+        CPU: 28ms
+     CGroup: /system.slice/cloudpros-app.service
+             └─784 socat TCP-LISTEN:8000,bind=127.0.0.1,reuseaddr,fork EXEC:/opt/cloudpros/respond.sh
+
+Nov 04 04:53:31 Blessed systemd[1]: Started cloudpros-app.service - CloudPros Self-Healing Web Application.
+
+=== RECOVERY JOURNAL ===
+Nov 04 04:16:10 Blessed systemd[1]: Started cloudpros-app.service - CloudPros Self-Healing Web Application.
+Nov 04 04:30:37 Blessed systemd[1]: Stopping cloudpros-app.service - CloudPros Self-Healing Web Application...
+Nov 04 04:30:37 Blessed systemd[1]: cloudpros-app.service: Main process exited, code=exited, status=143/n/a
+Nov 04 04:30:37 Blessed systemd[1]: cloudpros-app.service: Failed with result 'exit-code'.
+Nov 04 04:30:37 Blessed systemd[1]: Stopped cloudpros-app.service - CloudPros Self-Healing Web Application.
+Nov 04 04:30:37 Blessed systemd[1]: Started cloudpros-app.service - CloudPros Self-Healing Web Application.
+Nov 04 04:38:20 Blessed systemd[1]: Stopping cloudpros-app.service - CloudPros Self-Healing Web Application...
+Nov 04 04:38:20 Blessed systemd[1]: cloudpros-app.service: Main process exited, code=exited, status=143/n/a
+Nov 04 04:38:20 Blessed systemd[1]: cloudpros-app.service: Failed with result 'exit-code'.
+Nov 04 04:38:20 Blessed systemd[1]: Stopped cloudpros-app.service - CloudPros Self-Healing Web Application.
+-- Boot 2963c8472ec94ce1b518ed4be0fbdba8 --
+Nov 04 04:40:10 Blessed systemd[1]: Started cloudpros-app.service - CloudPros Self-Healing Web Application.
+Nov 04 04:49:15 Blessed systemd[1]: Stopping cloudpros-app.service - CloudPros Self-Healing Web Application...
+Nov 04 04:49:15 Blessed systemd[1]: cloudpros-app.service: Main process exited, code=exited, status=143/n/a
+Nov 04 04:49:15 Blessed systemd[1]: cloudpros-app.service: Failed with result 'exit-code'.
+Nov 04 04:49:15 Blessed systemd[1]: Stopped cloudpros-app.service - CloudPros Self-Healing Web Application.
+Nov 04 04:49:35 Blessed systemd[1]: Started cloudpros-app.service - CloudPros Self-Healing Web Application.
+Nov 04 04:53:27 Blessed systemd[1]: cloudpros-app.service: Main process exited, code=killed, status=9/KILL
+Nov 04 04:53:27 Blessed systemd[1]: cloudpros-app.service: Failed with result 'signal'.
+Nov 04 04:53:31 Blessed systemd[1]: Stopped cloudpros-app.service - CloudPros Self-Healing Web Application.
+Nov 04 04:53:31 Blessed systemd[1]: Started cloudpros-app.service - CloudPros Self-Healing Web Application.
