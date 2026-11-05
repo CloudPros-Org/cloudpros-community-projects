@@ -1,0 +1,16 @@
+[Unit]
+Description=CloudPros Web Service
+After=network.target
+
+[Service]
+Type=simple
+User=appuser
+Group=appuser
+WorkingDirectory=/opt/cloudpros
+# socat binds to localhost on port 8000 and forks to execute our bash script
+ExecStart=/usr/bin/socat TCP-LISTEN:8000,bind=127.0.0.1,reuseaddr,fork EXEC:/opt/cloudpros/app.sh
+Restart=always
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target
