@@ -1,0 +1,64 @@
+[
+    {
+        "Name": "malikhq_backend",
+        "Id": "1691a14f43f7af086f62408daf4e8f6d930362f2b6fa8de77806a94df7f5f172",
+        "Created": "2026-11-05T17:15:42.73388251Z",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv4": true,
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": null,
+            "Config": [
+                {
+                    "Subnet": "172.20.0.0/16",
+                    "Gateway": "172.20.0.1"
+                }
+            ]
+        },
+        "Internal": true,
+        "Attachable": false,
+        "Ingress": false,
+        "ConfigFrom": {
+            "Network": ""
+        },
+        "ConfigOnly": false,
+        "Options": {
+            "com.docker.network.enable_ipv4": "true",
+            "com.docker.network.enable_ipv6": "false"
+        },
+        "Labels": {
+            "com.docker.compose.config-hash": "3953073f11646dfa37e75d9704b83defc390c362646e442086de458c81afed18",
+            "com.docker.compose.network": "backend",
+            "com.docker.compose.project": "malikhq",
+            "com.docker.compose.version": "5.6.1"
+        },
+        "Containers": {
+            "414f45b6b698765624a765eb70f8428e966600b7b5c9fd58aa9e1ec497cb2462": {
+                "Name": "malikhq-api-1",
+                "EndpointID": "715b47ed03d8c97ec0d7290d696b240f0e6ac15f79d349cf541111a4f889b77c",
+                "MacAddress": "16:2c:38:1f:71:a0",
+                "IPv4Address": "172.20.0.2/16",
+                "IPv6Address": ""
+            },
+            "cd97778ced50bfd6872bfb4d89024598f300b2a21475b4c4ac33aaea77de96fd": {
+                "Name": "malikhq-db-1",
+                "EndpointID": "383ee48b7f61c7de7f46bca2755673fe334e4d33cc3898e98037ea4f0f455baa",
+                "MacAddress": "9a:18:c2:34:31:12",
+                "IPv4Address": "172.20.0.3/16",
+                "IPv6Address": ""
+            }
+        },
+        "Status": {
+            "IPAM": {
+                "Subnets": {
+                    "172.20.0.0/16": {
+                        "IPsInUse": 5,
+                        "DynamicIPsAvailable": 65531
+                    }
+                }
+            }
+        }
+    }
+]
