@@ -1,0 +1,9 @@
+[Unit]
+Description=Run the CloudPros health check every minute
+
+[Timer]
+OnCalendar=minutely
+Unit=cloudpros-healthcheck.service
+
+[Install]
+WantedBy=timers.target
