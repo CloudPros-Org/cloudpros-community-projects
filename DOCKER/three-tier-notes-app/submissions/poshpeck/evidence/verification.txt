@@ -1,0 +1,53 @@
+CLOUDPROS WEEK 2 - THREE-TIER NOTES APP
+Verification date: Sun Nov  8 14:33:34 UTC 2026
+
+===== 1. DOCKER COMPOSE SERVICES =====
+NAME                      IMAGE             COMMAND                  SERVICE   CREATED         STATUS                   PORTS
+cloudpros-week2-api-1     notes-api:1.0     "gunicorn --bind 0.0…"   api       6 minutes ago   Up 6 minutes (healthy)   5000/tcp
+cloudpros-week2-db-1      postgres:16       "docker-entrypoint.s…"   db        6 minutes ago   Up 6 minutes (healthy)   5432/tcp
+cloudpros-week2-proxy-1   notes-nginx:1.0   "/docker-entrypoint.…"   proxy     6 minutes ago   Up 6 minutes             0.0.0.0:8080->80/tcp, [::]:8080->80/tcp
+
+===== 2. APPLICATION HEALTH =====
+{"application":"notes-api","database":"connected","status":"healthy"}
+
+
+===== 3. NOTES API =====
+[{"content":"Testing note creation through the API.","created_at":"2026-11-08T14:22:14.969248","id":2,"title":"Pytest automated test"},{"content":"Testing the independently deployed three-tier application.","created_at":"2026-11-08T14:21:26.049204","id":1,"title":"CloudPros Week 2 Submission"}]
+
+
+===== 4. API IMAGE SIZE =====
+Image size: 140010371 bytes
+
+===== 5. NON-ROOT CONTAINER USER =====
+uid=999(app) gid=999(app) groups=999(app)
+
+===== 6. NETWORK MEMBERSHIP =====
+Proxy: {"cloudpros-week2_frontend":{"IPAMConfig":null,"Links":null,"Aliases":["cloudpros-week2-proxy-1","proxy"],"DriverOpts":null,"GwPriority":0,"NetworkID":"b32609d3d1f5e6c4b578bd5bed4a3ea44eec8a2c66bb096591632171fdcb4c56","EndpointID":"02856ed658e5541a019d115d81ae55c572f2f3125903f3ea766f9a3a2c977355","Gateway":"172.21.0.1","IPAddress":"172.21.0.3","MacAddress":"7a:61:86:80:ab:31","IPPrefixLen":16,"IPv6Gateway":"","GlobalIPv6Address":"","GlobalIPv6PrefixLen":0,"DNSNames":["cloudpros-week2-proxy-1","proxy","2fbaee8808f0"]}}
+API: {"cloudpros-week2_backend":{"IPAMConfig":null,"Links":null,"Aliases":["cloudpros-week2-api-1","api"],"DriverOpts":null,"GwPriority":0,"NetworkID":"1d331d3b808d3c38e2257891ede367ac3b4798fa7083134a51033ca42f26795b","EndpointID":"9e93c9e23beb30a1ab620466e7a0b15f44ea449d947427cfb457fddde2f5fdf8","Gateway":"172.20.0.1","IPAddress":"172.20.0.3","MacAddress":"ca:82:5b:e2:87:8d","IPPrefixLen":16,"IPv6Gateway":"","GlobalIPv6Address":"","GlobalIPv6PrefixLen":0,"DNSNames":["cloudpros-week2-api-1","api","9b54f60ba703"]},"cloudpros-week2_frontend":{"IPAMConfig":null,"Links":null,"Aliases":["cloudpros-week2-api-1","api"],"DriverOpts":null,"GwPriority":0,"NetworkID":"b32609d3d1f5e6c4b578bd5bed4a3ea44eec8a2c66bb096591632171fdcb4c56","EndpointID":"3ff37862c4d02f353934f3eabc295ef5e3c4af531739bf1c11d6373c5f310533","Gateway":"172.21.0.1","IPAddress":"172.21.0.2","MacAddress":"d2:93:c4:59:6a:46","IPPrefixLen":16,"IPv6Gateway":"","GlobalIPv6Address":"","GlobalIPv6PrefixLen":0,"DNSNames":["cloudpros-week2-api-1","api","9b54f60ba703"]}}
+Database: {"cloudpros-week2_backend":{"IPAMConfig":null,"Links":null,"Aliases":["cloudpros-week2-db-1","db"],"DriverOpts":null,"GwPriority":0,"NetworkID":"1d331d3b808d3c38e2257891ede367ac3b4798fa7083134a51033ca42f26795b","EndpointID":"1fb4545d766a28e19fe540c910aa680d3ee7f5181a816a4acd1abd1621c9976b","Gateway":"172.20.0.1","IPAddress":"172.20.0.2","MacAddress":"52:ca:4b:7b:34:d6","IPPrefixLen":16,"IPv6Gateway":"","GlobalIPv6Address":"","GlobalIPv6PrefixLen":0,"DNSNames":["cloudpros-week2-db-1","db","ffc3a3ccfd62"]}}
+
+===== 7. DATABASE VOLUME =====
+Volume: cloudpros-week2_postgres_data
+
+===== 8. AUTOMATED TESTS =====
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.2.0, pluggy-1.7.0 -- /home/blaze/cloudpros-project/DOCKER/three-tier-notes-app/submissions/poshpeck/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/blaze/cloudpros-project/cloudpros-week2/DOCKER/three-tier-notes-app/submissions/poshpeck
+collecting ... collected 7 items
+
+tests/test_api.py::test_health_endpoint PASSED                           [ 14%]
+tests/test_api.py::test_get_notes PASSED                                 [ 28%]
+tests/test_api.py::test_create_note PASSED                               [ 42%]
+tests/test_api.py::test_create_note_without_title PASSED                 [ 57%]
+tests/test_api.py::test_create_note_without_content PASSED               [ 71%]
+tests/test_api.py::test_create_note_with_invalid_json PASSED             [ 85%]
+tests/test_api.py::test_create_note_with_title_over_255_characters PASSED [100%]
+
+============================== 7 passed in 0.12s ===============================
+
+===== CORRECTED API IMAGE SIZE =====
+134M
+
+===== CORRECTED API IMAGE SIZE =====
+134M
