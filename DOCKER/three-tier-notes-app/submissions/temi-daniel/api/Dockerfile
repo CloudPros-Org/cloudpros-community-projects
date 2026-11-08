@@ -1,6 +1,6 @@
 # Stage 1: Build the application
 
-FROM python:3.13-slim AS build
+FROM python:3.13-alpine AS build
 
 WORKDIR /api
 
@@ -10,11 +10,11 @@ RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
 
 # Stage 2: Create the final image
 
-FROM python:3.13-slim AS production
+FROM python:3.13-alpine AS production
 
 WORKDIR /api
 
-RUN groupadd -r apigroup && useradd -r -g apigroup -d /api -s /sbin/nologin -c "Docker image user" appuser
+RUN addgroup -S apigroup && adduser -S -G apigroup -h /api -s /sbin/nologin appuser
 
 COPY --from=build /install /usr/local
 
