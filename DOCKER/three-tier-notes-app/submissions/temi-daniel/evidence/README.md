@@ -329,3 +329,11 @@ PS C:\Users\HP\OneDrive\Desktop\Docker\cloudpros-community-projects\DOCKER\three
  ✔ Container temi-daniel-api-1   Healthy                                                                                                                  19.6s
  ✔ Container temi-daniel-proxy-1 Started                                                                                                                  19.9s
 PS C:\Users\HP\OneDrive\Desktop\Docker\cloudpros-community-projects\DOCKER\three-tier-notes-app\submissions\temi-daniel>
+
+
+the api image
+
+PS C:\Users\HP\OneDrive\Desktop\Docker\cloudpros-community-projects\DOCKER\three-tier-notes-app\submissions\temi-daniel> docker image ls temi-daniel-api  
+                                                                                                                                           i Info →   U  In Use
+IMAGE                    ID             DISK USAGE   CONTENT SIZE   EXTRA
+temi-daniel-api:latest   463c1dcdbabb       94.3MB           23MB    U   
