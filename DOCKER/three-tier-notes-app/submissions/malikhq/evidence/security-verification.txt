@@ -1,0 +1,10 @@
+=== Published ports ===
+NAME              IMAGE                COMMAND                  SERVICE   CREATED              STATUS                        PORTS
+malikhq-api-1     malikhq-api          "gunicorn --bind 0.0…"   api       About a minute ago   Up About a minute (healthy)   5000/tcp
+malikhq-db-1      postgres:16-alpine   "docker-entrypoint.s…"   db        About a minute ago   Up About a minute (healthy)   5432/tcp
+malikhq-proxy-1   nginx:1.28-alpine    "/docker-entrypoint.…"   proxy     About a minute ago   Up 54 seconds (healthy)       0.0.0.0:8080->8080/tcp, [::]:8080->8080/tcp
+=== API runtime identity ===
+uid=999(app) gid=999(app) groups=999(app)
+
+=== API security settings ===
+ReadonlyRootfs=true CapDrop=["ALL"]

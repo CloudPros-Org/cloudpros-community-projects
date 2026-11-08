@@ -1,0 +1,11 @@
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0100    176 100    116 100     60   2103   1087                              0100    176 100    116 100     60   2099   1085                              0100    176 100    116 100     60   2096   1084                              0
+HTTP/1.1 201 CREATED
+Server: nginx/1.28.3
+Date: Sat, 07 Nov 2026 10:37:45 GMT
+Content-Type: application/json
+Content-Length: 116
+Connection: keep-alive
+
+{"content":"Testing POST endpoint","created_at":"2026-11-07T10:37:45.195782+00:00","id":5,"title":"Week 2 project"}

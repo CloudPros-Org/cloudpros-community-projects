@@ -1,0 +1,3 @@
+== API Image size ==
+CONTAINER           REPOSITORY          TAG                 PLATFORM            IMAGE ID            SIZE                CREATED
+malikhq-api-1       malikhq-api         latest              linux/amd64         cf1dea241b39        140MB               About a minute ago
