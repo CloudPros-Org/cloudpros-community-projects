@@ -133,7 +133,13 @@ Do not use `docker compose down -v` if you want to preserve database data.
 
 ## API Image Size
 
-The API Docker image is approximately 50.09 MB, below the 200 MB assignment requirement.
+The final built API Docker image is approximately 97.9 MB in Docker's reported disk usage, with a content size of 24 MB. This is below the assignment's 200 MB requirement.
+
+## Challenges and Solutions
+
+During development, Docker initially experienced DNS resolution issues when downloading dependencies and building the API image in WSL2.
+
+This was resolved by configuring DNS servers in the Docker daemon configuration and restarting Docker. After the change, image builds completed successfully.
 
 ## Useful Commands
 

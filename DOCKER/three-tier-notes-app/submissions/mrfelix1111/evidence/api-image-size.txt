@@ -1,1 +1,3 @@
-Image size: 50094368 bytes
+Final built API image: mrfelix1111-api:latest
+IMAGE                    ID             DISK USAGE   CONTENT SIZE   EXTRA
+mrfelix1111-api:latest   155f8face5ca       97.9MB           24MB   U    
