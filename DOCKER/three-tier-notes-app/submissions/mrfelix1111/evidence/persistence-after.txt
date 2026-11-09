@@ -1,0 +1,8 @@
+HTTP/1.1 200 OK
+Server: nginx/1.27.5
+Date: Wed, 04 Nov 2026 08:24:29 GMT
+Content-Type: application/json
+Content-Length: 215
+Connection: keep-alive
+
+[{"content":"My first Docker three-tier application note","created_at":"Wed, 04 Nov 2026 07:40:14 GMT","id":1},{"content":"Evidence test: POST endpoint working","created_at":"Wed, 04 Nov 2026 08:17:45 GMT","id":2}]
