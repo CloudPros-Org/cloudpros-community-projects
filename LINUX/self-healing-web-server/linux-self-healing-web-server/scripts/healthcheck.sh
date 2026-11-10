@@ -11,9 +11,9 @@ echo "HTTP Status Code: $response_code"
 
 
 if [ "$response_code" -eq 200 ]; then
-	echo "[$TIMESTAMP] : SUCCESS $response_code" >> "/var/log/cloudpros/cloudproshealthlogs.logs"
+	echo "[$TIMESTAMP] : SUCCESS $response_code" >> "/var/log/cloudpros/cloudproshealthlogs.log"
 else  	
-	echo "[$TIMESTAMP] : FAILED $response_code" >> "/var/log/cloudpros/cloudproshealthlogs.logs"
-	systemctl restart cloudproshealthtimer.service
+	echo "[$TIMESTAMP] : FAILED $response_code" >> "/var/log/cloudpros/cloudproshealthlogs.log"
+	systemctl restart cloudpros-app.service
 fi
 

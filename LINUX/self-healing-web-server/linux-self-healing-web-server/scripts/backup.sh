@@ -10,6 +10,7 @@ if [ "$statuschecker" -eq 0 ]; then
 	echo "Archiving complete"
 else 
 	echo "not complete"
+	exit 1
 fi
 
 find "$backupdir/" -type f -name "cloudpros_backup_*.tar.gz" -mtime +7 -delete #Delete backup after 7days 
