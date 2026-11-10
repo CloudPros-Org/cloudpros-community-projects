@@ -1,0 +1,124 @@
+[
+    {
+        "Name": "kevlar2_frontend",
+        "Id": "0edf9c5dc63fb87f746f55bdfdfbc9706f5fa5904b98b899ac4c9e806eb45e58",
+        "Created": "2026-11-09T23:54:02.283095583Z",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv4": true,
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": null,
+            "Config": [
+                {
+                    "Subnet": "172.19.0.0/16",
+                    "Gateway": "172.19.0.1"
+                }
+            ]
+        },
+        "Internal": false,
+        "Attachable": false,
+        "Ingress": false,
+        "ConfigFrom": {
+            "Network": ""
+        },
+        "ConfigOnly": false,
+        "Options": {},
+        "Labels": {
+            "com.docker.compose.config-hash": "1cc893e684a3930a1961dd1a733beb34c693abfbb3185ccaf796e115d51d8dd2",
+            "com.docker.compose.network": "frontend",
+            "com.docker.compose.project": "kevlar2",
+            "com.docker.compose.version": "5.7.0"
+        },
+        "Containers": {
+            "df98d61fe502d10f0db445753f52d775f4b39ade8bc4f2746df125d312da2446": {
+                "Name": "kevlar2-api-1",
+                "EndpointID": "bc7e997114ad3c7f9982d6515bdb28576b01cb3b524873a36ed776ba825a6c83",
+                "MacAddress": "62:55:ef:a7:12:5b",
+                "IPv4Address": "172.19.0.2/16",
+                "IPv6Address": ""
+            },
+            "e6352b6eba4403dc45f198c35dc89cf9e13bccbacfaa66026dbef710da435812": {
+                "Name": "kevlar2-proxy-1",
+                "EndpointID": "03459e03d35861048d8400fa5a9f57a23f2db7da13e7fc5523290670d4b0e69a",
+                "MacAddress": "3a:88:0a:48:97:cb",
+                "IPv4Address": "172.19.0.3/16",
+                "IPv6Address": ""
+            }
+        },
+        "Status": {
+            "IPAM": {
+                "Subnets": {
+                    "172.19.0.0/16": {
+                        "IPsInUse": 5,
+                        "DynamicIPsAvailable": 65531
+                    }
+                }
+            }
+        }
+    }
+]
+=========================================
+[
+    {
+        "Name": "kevlar2_backend",
+        "Id": "77dd75bebe5782ca887961d552235ba9098af4cc9b2807818f3fe875fc82fd54",
+        "Created": "2026-11-09T23:54:02.283047875Z",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv4": true,
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": null,
+            "Config": [
+                {
+                    "Subnet": "172.20.0.0/16",
+                    "Gateway": "172.20.0.1"
+                }
+            ]
+        },
+        "Internal": false,
+        "Attachable": false,
+        "Ingress": false,
+        "ConfigFrom": {
+            "Network": ""
+        },
+        "ConfigOnly": false,
+        "Options": {},
+        "Labels": {
+            "com.docker.compose.config-hash": "d0cca94cb1fa10dd2c0ba39c1d94e3a9872635126b4d0b7e3bc6f0a619e7eb43",
+            "com.docker.compose.network": "backend",
+            "com.docker.compose.project": "kevlar2",
+            "com.docker.compose.version": "5.7.0"
+        },
+        "Containers": {
+            "df98d61fe502d10f0db445753f52d775f4b39ade8bc4f2746df125d312da2446": {
+                "Name": "kevlar2-api-1",
+                "EndpointID": "bc3f3bc8cd830aa800eba5e7fd1a7d7d8113a13574ac62d8f66b7aa8b26507cd",
+                "MacAddress": "ae:7f:39:a5:a4:74",
+                "IPv4Address": "172.20.0.3/16",
+                "IPv6Address": ""
+            },
+            "f3d147fb83416a957ee8e40963615e5eb8584693dbe75e43889bc273041a8927": {
+                "Name": "kevlar2-db-1",
+                "EndpointID": "0d87c7bf4c4a79232a9171a5045dd3d0bbb8b1cf3e57c18a6550e18a4f263908",
+                "MacAddress": "d6:4a:02:d0:4f:ae",
+                "IPv4Address": "172.20.0.2/16",
+                "IPv6Address": ""
+            }
+        },
+        "Status": {
+            "IPAM": {
+                "Subnets": {
+                    "172.20.0.0/16": {
+                        "IPsInUse": 5,
+                        "DynamicIPsAvailable": 65531
+                    }
+                }
+            }
+        }
+    }
+]
+=========================================

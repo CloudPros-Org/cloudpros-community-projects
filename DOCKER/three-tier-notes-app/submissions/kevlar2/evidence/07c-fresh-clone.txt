@@ -1,0 +1,130 @@
+# Fresh clone test: 2026-11-10T01:16:41Z
+
+$ git clone --branch week2/three-tier-notes-app git@github.com:kevlar2/cloudpros-community-projects.git repo
+Cloning into 'repo'...
+
+$ ls -A
+.dockerignore
+.env.example
+.gitignore
+api
+docker-compose.yml
+Dockerfile
+evidence
+nginx
+README.md
+
+$ cp .env.example .env
+
+$ docker compose up -d --build --wait --wait-timeout 180
+ Image freshclone-api Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 630B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 680B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.12-alpine
+#3 DONE 0.5s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 126B done
+#4 DONE 0.0s
+
+#5 [builder 1/4] FROM docker.io/library/python:3.12-alpine@sha256:e064671ca452259bab50e8e2c7bd896e39e9a343bb06ca25234adf6fe18d0fc7
+#5 resolve docker.io/library/python:3.12-alpine@sha256:e064671ca452259bab50e8e2c7bd896e39e9a343bb06ca25234adf6fe18d0fc7 0.0s done
+#5 DONE 0.0s
+
+#6 [internal] load build context
+#6 transferring context: 1.98kB done
+#6 DONE 0.0s
+
+#7 [builder 4/4] RUN pip install --no-cache-dir -r requirements.txt
+#7 CACHED
+
+#8 [stage-1 3/6] COPY --from=builder /usr/local/lib/python3.12/site-packages /usr/local/lib/python3.12/site-packages
+#8 CACHED
+
+#9 [stage-1 4/6] COPY --from=builder /usr/local/bin /usr/local/bin
+#9 CACHED
+
+#10 [builder 2/4] WORKDIR /app
+#10 CACHED
+
+#11 [builder 3/4] COPY ./api/requirements.txt ./
+#11 CACHED
+
+#12 [stage-1 5/6] COPY ./api/app.py ./
+#12 CACHED
+
+#13 [stage-1 6/6] RUN adduser -D app
+#13 CACHED
+
+#14 exporting to image
+#14 exporting layers done
+#14 exporting manifest sha256:ec42bf5cc136356a09aedf196cbed9edca5c284c3b256728c4a75853c599bf44 done
+#14 exporting config sha256:7b711b89c1c0fcb13d92f948be44ad39e49c545ca231217b43f1df47e5c0c4c3 done
+#14 exporting attestation manifest sha256:ea91561c6361674e8195d69b5a2c3c1c8210b26874f0c271e5e8f4c98b5a5b37 done
+#14 exporting manifest list sha256:326c2b38d125850263a7921ee15c961f38b097ac5de4da94e887299b620c2cb0 done
+#14 naming to docker.io/library/freshclone-api:latest done
+#14 unpacking to docker.io/library/freshclone-api:latest done
+#14 DONE 0.1s
+
+#15 resolving provenance for metadata file
+#15 DONE 0.0s
+ Image freshclone-api Built 
+ Network freshclone_backend Creating 
+ Network freshclone_frontend Creating 
+ Network freshclone_frontend Creating 
+ Volume freshclone_postgres_data Creating 
+ Volume freshclone_postgres_data Creating 
+ Network freshclone_backend Creating 
+ Volume freshclone_postgres_data Created 
+ Volume freshclone_postgres_data Created 
+ Network freshclone_frontend Created 
+ Network freshclone_frontend Created 
+ Network freshclone_backend Created 
+ Network freshclone_backend Created 
+ Container freshclone-db-1 Creating 
+ Container freshclone-db-1 Created 
+ Container freshclone-api-1 Creating 
+ Container freshclone-api-1 Created 
+ Container freshclone-proxy-1 Creating 
+ Container freshclone-proxy-1 Created 
+ Container freshclone-db-1 Starting 
+ Container freshclone-db-1 Started 
+ Container freshclone-db-1 Waiting 
+ Container freshclone-db-1 Healthy 
+ Container freshclone-api-1 Starting 
+ Container freshclone-api-1 Started 
+ Container freshclone-api-1 Waiting 
+ Container freshclone-api-1 Healthy 
+ Container freshclone-proxy-1 Starting 
+ Container freshclone-proxy-1 Started 
+ Container freshclone-proxy-1 Waiting 
+ Container freshclone-api-1 Waiting 
+ Container freshclone-db-1 Waiting 
+ Container freshclone-proxy-1 Healthy 
+ Container freshclone-api-1 Healthy 
+ Container freshclone-db-1 Healthy 
+
+$ docker compose ps
+NAME                 IMAGE            COMMAND                  SERVICE   CREATED          STATUS                    PORTS
+freshclone-api-1     freshclone-api   "gunicorn --bind 0.0…"   api       12 seconds ago   Up 6 seconds (healthy)    8000/tcp
+freshclone-db-1      postgres:16      "docker-entrypoint.s…"   db        12 seconds ago   Up 12 seconds (healthy)   5432/tcp
+freshclone-proxy-1   nginx:alpine     "/docker-entrypoint.…"   proxy     12 seconds ago   Up Less than a second     0.0.0.0:8080->80/tcp, [::]:8080->80/tcp
+
+$ curl -s localhost:8080/health
+{"status":"ok"}
+
+$ curl -s localhost:8080/notes
+[]
+
+$ curl -s -X POST localhost:8080/notes -H Content-Type: application/json -d {"content":"fresh clone works"}
+{"content":"fresh clone works","created_at":"2026-11-10T01:16:57.383152+00:00","id":1}
+
+$ curl -s localhost:8080/notes
+[{"content":"fresh clone works","created_at":"2026-11-10T01:16:57.383152+00:00","id":1}]
+
