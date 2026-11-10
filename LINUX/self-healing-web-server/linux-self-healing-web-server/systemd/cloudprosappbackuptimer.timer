@@ -4,6 +4,6 @@ Description=Schedule daily backup of the cloudpros application directory
 [Timer]
 OnCalendar=*-*-* 00:00:00
 Persistent=true
-ø
+
 [Install]
 WantedBy=timers.target
