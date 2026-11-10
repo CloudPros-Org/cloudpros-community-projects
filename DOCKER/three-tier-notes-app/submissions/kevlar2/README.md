@@ -110,7 +110,9 @@ A note is created, then the stack is taken down with `docker compose down` (with
 ![.env.example](evidence/07a-env-example.png)
 ![.env is ignored](evidence/07b-env-ignored.png)
 
-<!-- TODO: add the fresh-clone run (07c-fresh-clone.png) once the branch is pushed -->
+A fresh clone of the branch works with only `cp .env.example .env` and `docker compose up -d --build`: all three services start, and `/health`, `GET /notes` and `POST /notes` work through Nginx.
+
+![fresh clone](evidence/07c-fresh-clone.png)
 
 ## Problems encountered and how I solved them
 
