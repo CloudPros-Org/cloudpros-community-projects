@@ -1,0 +1,62 @@
+[
+    {
+        "Name": "mrfelix1111_backend",
+        "Id": "19de3bfbb62f95e1df4f2e554f5588a42fb0f6b87edca2bf9bf2def44406a31e",
+        "Created": "2026-11-04T07:41:23.021071204Z",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv4": true,
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": null,
+            "Config": [
+                {
+                    "Subnet": "172.19.0.0/16",
+                    "IPRange": "",
+                    "Gateway": "172.19.0.1"
+                }
+            ]
+        },
+        "Internal": false,
+        "Attachable": false,
+        "Ingress": false,
+        "ConfigFrom": {
+            "Network": ""
+        },
+        "ConfigOnly": false,
+        "Options": {},
+        "Labels": {
+            "com.docker.compose.config-hash": "a5af3ebcae2a49bbdcce690d85afb353aeac72b1fdf2abd190d95489740778bc",
+            "com.docker.compose.network": "backend",
+            "com.docker.compose.project": "mrfelix1111",
+            "com.docker.compose.version": "2.40.3"
+        },
+        "Containers": {
+            "00c3542f18cf0bfe7a667203281de534a040e802b03ab0a65040a1579c4117bd": {
+                "Name": "notes-db",
+                "EndpointID": "242296a22dc91d3b7ae61af497445f2053747d2bc703b816a625ad5aef590868",
+                "MacAddress": "06:63:de:59:59:5e",
+                "IPv4Address": "172.19.0.2/16",
+                "IPv6Address": ""
+            },
+            "5a20dd13ba6a3444ce2da3da55c5915ccd9ad34609d345c3173c151ce094b3e2": {
+                "Name": "notes-api",
+                "EndpointID": "37b4f3775b8d1fdc59c16da879d532efd8c4ef6c943d62e698db95468ad6ce61",
+                "MacAddress": "36:cc:2b:3a:af:87",
+                "IPv4Address": "172.19.0.3/16",
+                "IPv6Address": ""
+            }
+        },
+        "Status": {
+            "IPAM": {
+                "Subnets": {
+                    "172.19.0.0/16": {
+                        "IPsInUse": 5,
+                        "DynamicIPsAvailable": 65531
+                    }
+                }
+            }
+        }
+    }
+]
