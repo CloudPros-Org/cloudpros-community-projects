@@ -1,0 +1,8 @@
+SHELL=/bin/bash
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+# Root owns the reports and can write to /var/log/shoplite.
+0 */6 * * * root /usr/local/sbin/sysreport.sh
+
+# Remove only timestamped ShopLite reports and their numeric logrotate archives.
+0 3 * * * root find /var/log/shoplite -maxdepth 1 -type f \( -name 'sysreport-????-??-??_??-??-??.log' -o -name 'sysreport-????-??-??_??-??-??.log.[0-9]*' \) -mmin +20160 -delete
