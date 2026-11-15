@@ -1,0 +1,146 @@
+==========================================
+SHOPLITE - LOGROTATE VERIFICATION
+==========================================
+
+1. Submission configuration
+/var/log/shoplite/*.log {
+    weekly
+    rotate 4
+    compress
+    missingok
+    notifempty
+    create 0640 root root
+}
+
+2. Installed configuration
+/var/log/shoplite/*.log {
+    weekly
+    rotate 4
+    compress
+    missingok
+    notifempty
+    create 0640 root root
+}
+
+3. Logrotate debug verification
+warning: logrotate in debug mode does nothing except printing debug messages!  Consider using verbose mode (-v) instead if this is not what you want.
+
+reading config file /etc/logrotate.d/shoplite
+Reading state from file: /var/lib/logrotate/status
+Allocating hash table for state file, size 64 entries
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+
+Handling 1 logs
+
+rotating pattern: /var/log/shoplite/*.log  weekly (4 rotations)
+empty log files are not rotated, old logs are removed
+considering log /var/log/shoplite/sysreport-2026-11-13_18-03-23.log
+Creating new state
+  Now: 2026-11-15 11:15
+  Last rotated at 2026-11-15 11:00
+  log does not need rotating (log has already been rotated)
+considering log /var/log/shoplite/sysreport-2026-11-13_18-07-01.log
+Creating new state
+  Now: 2026-11-15 11:15
+  Last rotated at 2026-11-15 11:00
+  log does not need rotating (log has already been rotated)
+considering log /var/log/shoplite/sysreport-2026-11-13_18-35-15.log
+Creating new state
+  Now: 2026-11-15 11:15
+  Last rotated at 2026-11-15 11:00
+  log does not need rotating (log has already been rotated)
+considering log /var/log/shoplite/sysreport-2026-11-13_18-37-54.log
+Creating new state
+  Now: 2026-11-15 11:15
+  Last rotated at 2026-11-15 11:00
+  log does not need rotating (log has already been rotated)
+considering log /var/log/shoplite/sysreport-2026-11-13_18-51-03.log
+Creating new state
+  Now: 2026-11-15 11:15
+  Last rotated at 2026-11-15 11:00
+  log does not need rotating (log has already been rotated)
+considering log /var/log/shoplite/sysreport-2026-11-13_18-57-56.log
+Creating new state
+  Now: 2026-11-15 11:15
+  Last rotated at 2026-11-15 11:00
+  log does not need rotating (log has already been rotated)
+considering log /var/log/shoplite/sysreport-2026-11-13_19-05-10.log
+Creating new state
+  Now: 2026-11-15 11:15
+  Last rotated at 2026-11-15 11:00
+  log does not need rotating (log has already been rotated)
+considering log /var/log/shoplite/sysreport-2026-11-13_19-07-22.log
+Creating new state
+  Now: 2026-11-15 11:15
+  Last rotated at 2026-11-15 11:00
+  log does not need rotating (log has already been rotated)
+considering log /var/log/shoplite/sysreport-2026-11-13_19-20-34.log
+Creating new state
+  Now: 2026-11-15 11:15
+  Last rotated at 2026-11-15 11:00
+  log does not need rotating (log has already been rotated)
+considering log /var/log/shoplite/sysreport-2026-11-13_19-32-46.log
+Creating new state
+  Now: 2026-11-15 11:15
+  Last rotated at 2026-11-15 11:00
+  log does not need rotating (log has already been rotated)
+considering log /var/log/shoplite/sysreport-2026-11-13_19-35-42.log
+Creating new state
+  Now: 2026-11-15 11:15
+  Last rotated at 2026-11-15 11:00
+  log does not need rotating (log has already been rotated)
+considering log /var/log/shoplite/sysreport-2026-11-13_19-36-37.log
+Creating new state
+  Now: 2026-11-15 11:15
+  Last rotated at 2026-11-15 11:00
+  log does not need rotating (log has already been rotated)
+considering log /var/log/shoplite/sysreport-2026-11-13_19-39-28.log
+Creating new state
+  Now: 2026-11-15 11:15
+  Last rotated at 2026-11-15 11:00
+  log does not need rotating (log has already been rotated)
+considering log /var/log/shoplite/sysreport-2026-11-14_07-34-10.log
+Creating new state
+  Now: 2026-11-15 11:15
+  Last rotated at 2026-11-15 11:00
+  log does not need rotating (log has already been rotated)

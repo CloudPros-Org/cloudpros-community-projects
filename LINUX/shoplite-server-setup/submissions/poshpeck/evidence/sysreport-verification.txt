@@ -1,0 +1,96 @@
+==========================================
+SHOPLITE - SYSTEM REPORT VERIFICATION
+==========================================
+
+1. Script syntax validation
+PASS
+
+2. ShellCheck validation
+PASS - No issues found
+
+3. Script execution
+[2026-11-14 07:34:10] ==========================================
+[2026-11-14 07:34:10] SHOPLITE SYSTEM REPORT
+[2026-11-14 07:34:10] ==========================================
+[2026-11-14 07:34:10] Report saved to: /var/log/shoplite/sysreport-2026-11-14_07-34-10.log
+[2026-11-14 07:34:10] 
+[2026-11-14 07:34:10] SYSTEM INFORMATION
+[2026-11-14 07:34:10] Hostname: Paul
+[2026-11-14 07:34:10] Uptime: up 9 hours, 11 minutes
+[2026-11-14 07:34:10] 
+[2026-11-14 07:34:10] SYSTEM LOAD AVERAGE
+[2026-11-14 07:34:10] Load average (1, 5, 15 minutes): 1.19 1.19 0.64
+[2026-11-14 07:34:10] 
+[2026-11-14 07:34:10] MEMORY USAGE
+[2026-11-14 07:34:10] Memory usage: 7.5%
+[2026-11-14 07:34:10] 
+[2026-11-14 07:34:10] FILESYSTEMS ABOVE 80% USAGE
+Filesystem     1024-blocks      Used Available Capacity Mounted on
+drivers          981259260 790472128 190787132      81% /usr/lib/wsl/drivers
+C:\              981259260 790472128 190787132      81% /mnt/c
+[2026-11-14 07:34:10] 
+[2026-11-14 07:34:10] TOP 5 MEMORY-CONSUMING PROCESSES
+    PID COMMAND         %MEM %CPU
+ 118658 updatedb.plocat  1.1  7.8
+    457 mongod           0.9  0.5
+    527 dockerd          0.6  0.2
+    532 python3.10       0.4  0.0
+    468 containerd       0.3  0.2
+[2026-11-14 07:34:10] 
+[2026-11-14 07:34:10] FAILED SYSTEMD UNITS
+[2026-11-14 07:34:10] No failed systemd units.
+[2026-11-14 07:34:10] 
+[2026-11-14 07:34:10] FAILED SSH LOGINS IN THE LAST 24 HOURS
+[2026-11-14 07:34:11] No failed SSH login records found in the last 24 hours.
+
+4. Generated report files
+total 56K
+-rw-r----- 1 root root  266 Nov 13 18:03 sysreport-2026-11-13_18-03-23.log
+-rw-r----- 1 root root  266 Nov 13 18:07 sysreport-2026-11-13_18-07-01.log
+-rw-r----- 1 root root  555 Nov 13 18:35 sysreport-2026-11-13_18-35-15.log
+-rw-r----- 1 root root  654 Nov 13 18:37 sysreport-2026-11-13_18-37-54.log
+-rw-r----- 1 root root  934 Nov 13 18:51 sysreport-2026-11-13_18-51-03.log
+-rw-r----- 1 root root 1.2K Nov 13 18:57 sysreport-2026-11-13_18-57-56.log
+-rw-r----- 1 root root 1.3K Nov 13 19:05 sysreport-2026-11-13_19-05-10.log
+-rw-r----- 1 root root 1.5K Nov 13 19:07 sysreport-2026-11-13_19-07-22.log
+-rw-r----- 1 root root 1.5K Nov 13 19:20 sysreport-2026-11-13_19-20-34.log
+-rw-r----- 1 root root 1.5K Nov 13 19:32 sysreport-2026-11-13_19-32-46.log
+-rw-r----- 1 root root 1.5K Nov 13 19:35 sysreport-2026-11-13_19-35-42.log
+-rw-r----- 1 root root 1.5K Nov 13 19:36 sysreport-2026-11-13_19-36-37.log
+-rw-r----- 1 root root 1.5K Nov 13 19:39 sysreport-2026-11-13_19-39-28.log
+-rw-r----- 1 root root 1.5K Nov 14 07:34 sysreport-2026-11-14_07-34-10.log
+
+5. Latest saved report contents
+[2026-11-14 07:34:10] ==========================================
+[2026-11-14 07:34:10] SHOPLITE SYSTEM REPORT
+[2026-11-14 07:34:10] ==========================================
+[2026-11-14 07:34:10] Report saved to: /var/log/shoplite/sysreport-2026-11-14_07-34-10.log
+[2026-11-14 07:34:10] 
+[2026-11-14 07:34:10] SYSTEM INFORMATION
+[2026-11-14 07:34:10] Hostname: Paul
+[2026-11-14 07:34:10] Uptime: up 9 hours, 11 minutes
+[2026-11-14 07:34:10] 
+[2026-11-14 07:34:10] SYSTEM LOAD AVERAGE
+[2026-11-14 07:34:10] Load average (1, 5, 15 minutes): 1.19 1.19 0.64
+[2026-11-14 07:34:10] 
+[2026-11-14 07:34:10] MEMORY USAGE
+[2026-11-14 07:34:10] Memory usage: 7.5%
+[2026-11-14 07:34:10] 
+[2026-11-14 07:34:10] FILESYSTEMS ABOVE 80% USAGE
+Filesystem     1024-blocks      Used Available Capacity Mounted on
+drivers          981259260 790472128 190787132      81% /usr/lib/wsl/drivers
+C:\              981259260 790472128 190787132      81% /mnt/c
+[2026-11-14 07:34:10] 
+[2026-11-14 07:34:10] TOP 5 MEMORY-CONSUMING PROCESSES
+    PID COMMAND         %MEM %CPU
+ 118658 updatedb.plocat  1.1  7.8
+    457 mongod           0.9  0.5
+    527 dockerd          0.6  0.2
+    532 python3.10       0.4  0.0
+    468 containerd       0.3  0.2
+[2026-11-14 07:34:10] 
+[2026-11-14 07:34:10] FAILED SYSTEMD UNITS
+[2026-11-14 07:34:10] No failed systemd units.
+[2026-11-14 07:34:10] 
+[2026-11-14 07:34:10] FAILED SSH LOGINS IN THE LAST 24 HOURS
+[2026-11-14 07:34:11] No failed SSH login records found in the last 24 hours.

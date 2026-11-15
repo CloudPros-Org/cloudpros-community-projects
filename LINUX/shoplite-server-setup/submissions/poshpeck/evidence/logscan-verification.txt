@@ -1,0 +1,116 @@
+==========================================
+SHOPLITE - LOGSCAN VERIFICATION
+==========================================
+
+1. Bash syntax validation
+PASS
+
+2. ShellCheck validation
+PASS
+
+3. Analysis of actual Nginx access log
+[2026-11-14 08:42:54] ==========================================
+[2026-11-14 08:42:54] SHOPLITE NGINX LOG ANALYSIS
+[2026-11-14 08:42:54] ==========================================
+[2026-11-14 08:42:54] Log file: /var/log/nginx/access.log
+[2026-11-14 08:42:54] Top results limit: 5
+[2026-11-14 08:42:54] Total requests: 4
+[2026-11-14 08:42:54] 
+[2026-11-14 08:42:54] HTTP STATUS CODE BREAKDOWN
+HTTP 200: 4 requests
+[2026-11-14 08:42:54] 
+[2026-11-14 08:42:54] 5XX SERVER ERRORS
+[2026-11-14 08:42:54] Total 5xx errors: 0
+[2026-11-14 08:42:54] 
+[2026-11-14 08:42:54] TOP 5 CLIENT IP ADDRESSES
+IP: 127.0.0.1          Requests: 4
+[2026-11-14 08:42:54] 
+[2026-11-14 08:42:54] TOP 5 REQUESTED URLS
+URL: /                              Requests: 2
+URL: /favicon.ico                   Requests: 1
+URL: /nonexistent-page              Requests: 1
+
+4. Analysis of test log with multiple HTTP statuses
+[2026-11-14 08:42:54] ==========================================
+[2026-11-14 08:42:54] SHOPLITE NGINX LOG ANALYSIS
+[2026-11-14 08:42:54] ==========================================
+[2026-11-14 08:42:54] Log file: /tmp/shoplite-test-access.log
+[2026-11-14 08:42:54] Top results limit: 5
+[2026-11-14 08:42:54] Total requests: 5
+[2026-11-14 08:42:54] 
+[2026-11-14 08:42:54] HTTP STATUS CODE BREAKDOWN
+HTTP 200: 2 requests
+HTTP 404: 1 requests
+HTTP 500: 1 requests
+HTTP 503: 1 requests
+[2026-11-14 08:42:54] 
+[2026-11-14 08:42:54] 5XX SERVER ERRORS
+[2026-11-14 08:42:54] Total 5xx errors: 2
+[2026-11-14 08:42:54] 
+[2026-11-14 08:42:54] TOP 5 CLIENT IP ADDRESSES
+IP: 192.0.2.10         Requests: 2
+IP: 192.0.2.12         Requests: 2
+IP: 192.0.2.11         Requests: 1
+[2026-11-14 08:42:54] 
+[2026-11-14 08:42:54] TOP 5 REQUESTED URLS
+URL: /checkout                      Requests: 1
+URL: /home                          Requests: 1
+URL: /missing                       Requests: 1
+URL: /payment                       Requests: 1
+URL: /products                      Requests: 1
+
+5. HTTP 500 status filter
+[2026-11-14 08:42:54] ==========================================
+[2026-11-14 08:42:54] SHOPLITE NGINX LOG ANALYSIS
+[2026-11-14 08:42:54] ==========================================
+[2026-11-14 08:42:54] Log file: /tmp/shoplite-test-access.log
+[2026-11-14 08:42:54] Top results limit: 5
+[2026-11-14 08:42:54] Total requests: 1
+[2026-11-14 08:42:54] 
+[2026-11-14 08:42:54] HTTP STATUS CODE BREAKDOWN
+HTTP 500: 1 requests
+[2026-11-14 08:42:54] 
+[2026-11-14 08:42:54] 5XX SERVER ERRORS
+[2026-11-14 08:42:54] Total 5xx errors: 1
+[2026-11-14 08:42:54] 
+[2026-11-14 08:42:54] TOP 5 CLIENT IP ADDRESSES
+IP: 192.0.2.12         Requests: 1
+[2026-11-14 08:42:54] 
+[2026-11-14 08:42:54] TOP 5 REQUESTED URLS
+URL: /checkout                      Requests: 1
+
+6. Invalid argument test
+Error: -n must be a positive integer.
+Usage: logscan.sh [-f FILE] [-n N] [-s STATUS] [-h]
+
+Options:
+  -f FILE    Nginx access log file (default: /var/log/nginx/access.log)
+  -n N       Number of top results to display (default: 5)
+  -s STATUS  Filter requests by HTTP status code
+  -h         Display this help message
+Exit code: 2
+
+7. Invalid HTTP status test
+Error: -s must be a valid three-digit HTTP status code (100-599).
+Usage: logscan.sh [-f FILE] [-n N] [-s STATUS] [-h]
+
+Options:
+  -f FILE    Nginx access log file (default: /var/log/nginx/access.log)
+  -n N       Number of top results to display (default: 5)
+  -s STATUS  Filter requests by HTTP status code
+  -h         Display this help message
+Exit code: 2
+
+8. Missing file test
+Error: Log file does not exist: /tmp/does-not-exist.log
+Exit code: 1
+
+9. Help option test
+Usage: logscan.sh [-f FILE] [-n N] [-s STATUS] [-h]
+
+Options:
+  -f FILE    Nginx access log file (default: /var/log/nginx/access.log)
+  -n N       Number of top results to display (default: 5)
+  -s STATUS  Filter requests by HTTP status code
+  -h         Display this help message
+Exit code: 0

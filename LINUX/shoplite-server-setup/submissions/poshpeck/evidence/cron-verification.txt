@@ -1,0 +1,17 @@
+======================================
+SHOPLITE - CRON VERIFICATION
+======================================
+
+1. Cron service active status
+active
+
+2. Cron service enabled status
+enabled
+
+3. Installed ShopLite cron configuration
+0 */6 * * * root /home/blaze/cloudpros-project/linux-self-healing-web-server/LINUX/shoplite-server-setup/submissions/poshpeck/scripts/sysreport.sh
+
+15 2 * * * root /home/blaze/cloudpros-project/linux-self-healing-web-server/LINUX/shoplite-server-setup/submissions/poshpeck/scripts/cleanup-reports.sh
+
+4. Installed file permissions
+-rw-r--r-- 1 root root 300 Nov 15 09:44 /etc/cron.d/shoplite

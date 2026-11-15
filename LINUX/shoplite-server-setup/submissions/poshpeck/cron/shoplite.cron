@@ -1,0 +1,3 @@
+0 */6 * * * root /home/blaze/cloudpros-project/linux-self-healing-web-server/LINUX/shoplite-server-setup/submissions/poshpeck/scripts/sysreport.sh
+
+15 2 * * * root /home/blaze/cloudpros-project/linux-self-healing-web-server/LINUX/shoplite-server-setup/submissions/poshpeck/scripts/cleanup-reports.sh
