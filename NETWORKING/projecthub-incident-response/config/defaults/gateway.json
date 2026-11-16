@@ -1,0 +1,7 @@
+{
+  "bind_host": "127.0.0.2",
+  "port": 18080,
+  "upstream_host": "api.projecthub.test",
+  "upstream_port": 18081,
+  "api_prefix": "/api"
+}
