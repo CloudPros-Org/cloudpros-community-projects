@@ -1,0 +1,5 @@
+{
+  "api_host": "api.projecthub.test",
+  "api_port": 18081,
+  "poll_seconds": 2
+}
