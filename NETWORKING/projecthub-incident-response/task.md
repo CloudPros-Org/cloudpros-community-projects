@@ -102,6 +102,21 @@ The main application endpoints are:
 
 A task created through the application should move from `queued` to `processed` when the worker is operating correctly.
 
+## Suggested Weekly Pace
+
+Use the week to investigate properly rather than rushing through all five tickets in one sitting.
+
+| Day | Activity |
+|---|---|
+| Monday | Provision the lab, understand the service map, capture the healthy baseline and investigate Incident 1. |
+| Tuesday | Resolve and document Incident 2. |
+| Wednesday | Resolve and document Incident 3. |
+| Thursday | Resolve and document Incident 4. |
+| Friday | Resolve and document Incident 5. |
+| Weekend | Complete end-to-end verification, review your incident reports and submit your work. |
+
+Before introducing the first fault, save evidence of the healthy environment. This should establish that the private names resolve, the expected services are reachable, the application endpoints respond and a newly created task is processed successfully.
+
 ## Your Incidents
 
 There are five incidents, introduced progressively throughout the week. Each ticket describes what users or the support team are experiencing. You are responsible for determining the underlying cause.
@@ -207,10 +222,14 @@ Include the actual outputs from your own lab. Screenshots can support your repor
 
 Your final report should also include:
 
-- A brief description of the service architecture.
+- A brief description of the service architecture and a network/request-flow diagram.
 - The final verification results.
 - Any differences you encountered between macOS, WSL2 or Linux.
 - What you learnt and what you would improve if you owned this service in production.
+
+### Optional Stretch Challenge
+
+Write a small shell-based preflight tool that checks the ProjectHub service path end to end. It should report useful pass/fail results for name resolution, TCP reachability, HTTP health and background task processing. Use meaningful exit codes and clear output so another engineer could run it during an incident.
 
 ## Submission Instructions
 
