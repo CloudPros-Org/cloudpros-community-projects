@@ -1,0 +1,101 @@
+FRESH INSTALL - BUILD OUTPUT
+
+time="2026-11-11T06:33:02Z" level=warning msg="Docker Compose is configured to build using Bake, but buildx isn't installed"
+#0 building with "default" instance using docker driver
+
+#1 [api internal] load build definition from Dockerfile
+#1 transferring dockerfile: 639B done
+#1 DONE 0.0s
+
+#2 [api internal] load metadata for docker.io/library/python:3.12-alpine
+#2 DONE 0.3s
+
+#3 [api internal] load .dockerignore
+#3 transferring context: 130B done
+#3 DONE 0.0s
+
+#4 [api internal] load build context
+#4 transferring context: 94B done
+#4 DONE 0.0s
+
+#5 [api builder 1/4] FROM docker.io/library/python:3.12-alpine@sha256:e064671ca452259bab50e8e2c7bd896e39e9a343bb06ca25234adf6fe18d0fc7
+#5 resolve docker.io/library/python:3.12-alpine@sha256:e064671ca452259bab50e8e2c7bd896e39e9a343bb06ca25234adf6fe18d0fc7 0.0s done
+#5 DONE 0.0s
+
+#6 [api builder 4/4] RUN pip install --no-cache-dir --prefix=/install/deps -r requirements.txt
+#6 CACHED
+
+#7 [api runtime 3/5] WORKDIR /app
+#7 CACHED
+
+#8 [api runtime 4/5] COPY --from=builder /install/deps /usr/local
+#8 CACHED
+
+#9 [api runtime 2/5] RUN addgroup -S appgroup &&     adduser -S -G appgroup -H appuser
+#9 CACHED
+
+#10 [api builder 2/4] WORKDIR /install
+#10 CACHED
+
+#11 [api builder 3/4] COPY api/requirements.txt .
+#11 CACHED
+
+#12 [api runtime 5/5] COPY --chown=appuser:appgroup api/ .
+#12 CACHED
+
+#13 [api] exporting to image
+#13 exporting layers done
+#13 exporting manifest sha256:e33cbfd1f9f1f48a6cc87e27029cb597e480f4789526bcddc80145ed489d840d done
+#13 exporting config sha256:a2ef1c718c952ececfafd5f17d3e8c2bb5cbd14eefd6d0af9b08ab007d8a5669 done
+#13 exporting attestation manifest sha256:93b1c2873a3605bcd71e63f26dc7a8c6c54dff244478b01ade294aaa01b071eb 0.0s done
+#13 exporting manifest list sha256:02e71b23e5792c794d075f0607a82535782b4f7e910d46eb1941e6dc6d77f6d8
+#13 exporting manifest list sha256:02e71b23e5792c794d075f0607a82535782b4f7e910d46eb1941e6dc6d77f6d8 0.0s done
+#13 naming to docker.io/library/freshnotes-api:latest done
+#13 unpacking to docker.io/library/freshnotes-api:latest 0.0s done
+#13 DONE 0.1s
+
+#14 [api] resolving provenance for metadata file
+#14 DONE 0.0s
+ api  Built
+ Network freshnotes_frontend  Creating
+ Network freshnotes_frontend  Created
+ Network freshnotes_backend  Creating
+ Network freshnotes_backend  Created
+ Volume freshnotes_postgres_data  Creating
+ Volume freshnotes_postgres_data  Created
+ Container freshnotes-db-1  Creating
+ Container freshnotes-db-1  Created
+ Container freshnotes-api-1  Creating
+ Container freshnotes-api-1  Created
+ Container freshnotes-proxy-1  Creating
+ Container freshnotes-proxy-1  Created
+ Container freshnotes-db-1  Starting
+ Container freshnotes-db-1  Started
+ Container freshnotes-db-1  Waiting
+ Container freshnotes-db-1  Healthy
+ Container freshnotes-api-1  Starting
+ Container freshnotes-api-1  Started
+ Container freshnotes-api-1  Waiting
+ Container freshnotes-api-1  Healthy
+ Container freshnotes-proxy-1  Starting
+ Container freshnotes-proxy-1  Started
+
+
+CONTAINER STATUS
+
+NAME                 IMAGE                COMMAND                  SERVICE   CREATED              STATUS                        PORTS
+freshnotes-api-1     freshnotes-api       "python app.py"          api       About a minute ago   Up 58 seconds (healthy)       5000/tcp
+freshnotes-db-1      postgres:16-alpine   "docker-entrypoint.s…"   db        About a minute ago   Up About a minute (healthy)   5432/tcp
+freshnotes-proxy-1   nginx:1.27-alpine    "/docker-entrypoint.…"   proxy     About a minute ago   Up 52 seconds                 0.0.0.0:8081->80/tcp, [::]:8081->80/tcp
+
+
+API HEALTH RESPONSE
+
+HTTP/1.1 200 OK
+Server: nginx/1.27.5
+Date: Wed, 11 Nov 2026 06:34:31 GMT
+Content-Type: application/json
+Content-Length: 21
+Connection: keep-alive
+
+{"status":"healthy"}

@@ -1,0 +1,4 @@
+NAME          IMAGE                COMMAND                  SERVICE   CREATED          STATUS                    PORTS
+notes-api     mrfelix1111-api      "python app.py"          api       23 minutes ago   Up 23 minutes (healthy)   5000/tcp
+notes-db      postgres:16-alpine   "docker-entrypoint.s…"   db        34 minutes ago   Up 34 minutes (healthy)   5432/tcp
+notes-proxy   nginx:1.27-alpine    "/docker-entrypoint.…"   proxy     34 minutes ago   Up 34 minutes             0.0.0.0:8080->80/tcp, [::]:8080->80/tcp
