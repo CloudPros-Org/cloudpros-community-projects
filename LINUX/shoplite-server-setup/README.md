@@ -1,31 +1,99 @@
-# Week 3: ShopLite Server Toolkit
+# ShopLite Server Toolkit
 
-Build a shared Ubuntu server workspace and two Bash operations tools.
+## Overview
 
-**Deadline:** Sunday 15 November 2026, 11:59 PM GMT.
+This project implements a basic Linux administration toolkit for ShopLite on Ubuntu 24.04.
 
-**Start here:** [Full Week 3 task](task.md).
+It provides secure shared directory access, Nginx installation, system health reporting, Nginx access-log analysis, scheduled report generation, and log rotation.
 
-## Where to work
+## Components
 
-Submit your own files under `submissions/<your-github-handle>/`. Include your scripts, cron and logrotate configuration, setup instructions, and evidence in your personal README. Do not modify the task brief or another contributor's submission.
+- `setup.sh` — installs dependencies, creates the required users and group, configures permissions, installs scripts, and registers cron and logrotate configuration.
+- `scripts/sysreport.sh` — generates a timestamped system report and displays it on screen.
+- `scripts/logscan.sh` — analyses Nginx access logs, including request totals, HTTP status counts, top client IPs, top URLs, and 5xx responses.
+- `cron/shoplite.cron` — schedules reporting every six hours and selectively cleans up old report files.
+- `logrotate/shoplite` — configures weekly rotation, four rotations, compression, and safe ownership.
+- `evidence/` — contains captured test results and validation output.
 
-## Environment
+## Requirements
 
-This challenge uses **Ubuntu 24.04**, but you do not need a cloud server:
+- Ubuntu 24.04
+- Bash
+- Nginx
+- cron
+- logrotate
+- ACL utilities
+- ShellCheck
+- Git
 
-- **Windows:** Ubuntu 24.04 using WSL2, in Windows Terminal or VS Code.
-- **Mac:** macOS Terminal plus an Ubuntu 24.04 VM such as Multipass for Linux-specific commands.
-- **Ubuntu Linux:** Your normal terminal.
+## Setup
 
-See the full task for setup and verification commands.
+From this submission directory, run:
 
-## Pull request
+```bash
+sudo bash ./setup.sh
+```
 
-Open a PR against **`week3-shoplite-server-setup`**, not `main`.
+Open a new login session after setup so the new supplementary group membership is applied.
 
-Title: `[Week 3] ShopLite Server Toolkit - Your Name`
+## Usage
 
-Mention **@joincloudpros** for review and leave your PR open. Do not self-merge.
+Generate a system report:
 
-Need help? Ask in the CloudPros **Ask for Help** group.
+```bash
+sudo /usr/local/sbin/sysreport.sh
+```
+
+Analyse the default Nginx access log:
+
+```bash
+sudo /usr/local/sbin/logscan.sh -n 3
+```
+
+Filter by HTTP status:
+
+```bash
+sudo /usr/local/sbin/logscan.sh -s 404
+```
+
+Analyse another file:
+
+```bash
+sudo /usr/local/sbin/logscan.sh -f /path/to/access.log
+```
+
+Display help:
+
+```bash
+sudo /usr/local/sbin/logscan.sh -h
+```
+
+## Permissions design
+
+The `shopops` group provides shared access for `ava` and `tom`. The `/srv/shoplite` directory uses group ownership, setgid, and a default ACL. Access for users outside the group is denied.
+
+## Scheduling and log management
+
+The root cron configuration runs system reporting every six hours. A separate job removes matching original ShopLite report files older than 14 days.
+
+Logrotate checks `/var/log/shoplite/*.log` weekly and retains four rotations. Because each report has its own timestamped filename, logrotate tracks individual files rather than combining all reports into a single file. The cleanup job operates separately and does not delete unrelated files or compressed archives.
+
+## Validation
+
+See the `evidence/` directory for captured results covering:
+
+- User and group membership
+- Shared-directory permissions
+- Nginx HTTP responses
+- System report output
+- Log analysis and error handling
+- ShellCheck
+- Cron and logrotate configuration
+
+## Environment notes
+
+Record the actual Ubuntu version and any WSL-specific limitations observed during testing. Systemd status and SSH authentication logs depend on the environment and available services.
+
+## Lessons learned
+
+This project demonstrates Linux permissions and ACLs, Bash argument validation, log parsing, error handling, cron scheduling, logrotate configuration, and evidence-based testing.

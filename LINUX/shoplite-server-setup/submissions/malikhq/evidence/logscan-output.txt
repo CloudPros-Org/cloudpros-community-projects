@@ -1,0 +1,21 @@
+
+========== SHOPLITE NGINX LOG ANALYSIS ==========
+[2026-11-18 22:44:53] Input file: /var/log/nginx/access.log
+[2026-11-18 22:44:53] Status filter: none
+
+Total requests: 13
+
+========== COUNTS BY HTTP STATUS ==========
+200 13
+
+========== TOP 3 CLIENT IP ADDRESSES ==========
+     13 127.0.0.1
+
+========== TOP 3 REQUESTED URLS ==========
+      7 /
+      2 /not-found
+      2 /health
+
+5xx responses: 0
+[2026-11-18 22:44:53] Log analysis completed
+/usr/local/sbin/logscan.sh: line 1: tmp_file: unbound variable
