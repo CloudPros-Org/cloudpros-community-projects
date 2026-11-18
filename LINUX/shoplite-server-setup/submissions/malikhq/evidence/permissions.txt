@@ -1,0 +1,18 @@
+uid=1002(ava) gid=1004(ava) groups=1004(ava),1003(shopops)
+uid=1003(tom) gid=1005(tom) groups=1005(tom),1003(shopops)
+drwxrws---+ 2 root shopops 4096 Nov 17 14:56 /srv/shoplite
+getfacl: Removing leading '/' from absolute path names
+# file: srv/shoplite
+# owner: root
+# group: shopops
+# flags: -s-
+user::rwx
+group::rwx
+mask::rwx
+other::---
+default:user::rwx
+default:group::rwx
+default:group:shopops:rwx
+default:mask::rwx
+default:other::---
+

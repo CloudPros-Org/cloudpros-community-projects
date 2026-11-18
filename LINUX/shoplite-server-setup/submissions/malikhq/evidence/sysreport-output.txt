@@ -1,0 +1,38 @@
+[2026-11-18 22:44:53] ShopLite system report started
+Report file: /var/log/shoplite/sysreport-20261118_224453.log
+
+========== HOSTNAME AND UPTIME ==========
+Hostname: Malik
+Uptime: up 7 hours, 41 minutes
+
+========== LOAD AVERAGE ==========
+1 minute: 0.07
+5 minutes: 0.08
+15 minutes: 0.05
+
+========== MEMORY USAGE ==========
+               total        used        free      shared  buff/cache   available
+Mem:           7.7Gi       1.5Gi       5.8Gi       4.2Mi       467Mi       6.1Gi
+Swap:          2.0Gi          0B       2.0Gi
+Memory used: 20.1%
+
+========== FILESYSTEMS OVER 80% ==========
+/dev/sdb             99148     99148         0     100% /usr/src/linux-headers-6.18.58.1-microsoft-standard-WSL2
+drivers          499190780 446519684  52671096      90% /usr/lib/wsl/drivers
+C:\              499190780 446519684  52671096      90% /mnt/c
+
+========== TOP FIVE PROCESSES BY MEMORY ==========
+    PID COMMAND         %MEM   RSS
+    654 MainThread       7.8 631288
+    566 MainThread       2.2 180484
+    630 MainThread       1.9 154732
+   7165 MainThread       1.4 118520
+    770 codex            1.3 107788
+
+========== FAILED SYSTEMD UNITS ==========
+No failed systemd units reported, or systemd data is unavailable.
+
+========== FAILED SSH LOGINS: LAST 24 HOURS ==========
+No SSH-related journal entries found in the last 24 hours.
+SSH may be inactive or authentication logs may be unavailable.
+[2026-11-18 22:44:53] ShopLite system report completed
