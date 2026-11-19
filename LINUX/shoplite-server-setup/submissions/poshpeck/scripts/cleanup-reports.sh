@@ -3,7 +3,7 @@
 set -euo pipefail
 
 # Report directory
-REPORT_DIR="/var/log/shoplite"
+REPORT_DIR="${REPORT_DIR:-/var/log/shoplite}"
 
 # Timestamped logging function
 log() {

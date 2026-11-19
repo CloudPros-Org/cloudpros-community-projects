@@ -115,7 +115,7 @@ sysreport-2026-11-14_07-34-10.log
 - Filesystems above 80% utilisation.
 - Top five memory-consuming processes.
 - Failed systemd units.
-- Failed SSH login attempts within the last 24 hours.
+- SSH authentication activity and failed login attempts within the last 24 hours, where available in the system journal.
 
 The report is displayed in the terminal and saved to a timestamped file.
 
@@ -211,6 +211,26 @@ Installed system-wide at:
 /etc/cron.d/shoplite
 ```
 
+### Installation
+
+From the ShopLite submission directory, install the scripts and cron configuration:
+
+```bash
+sudo install -d -o root -g root -m 755 /usr/local/sbin/shoplite
+
+sudo install -o root -g root -m 755 \
+scripts/sysreport.sh \
+/usr/local/sbin/shoplite/sysreport.sh
+
+sudo install -o root -g root -m 755 \
+scripts/cleanup-reports.sh \
+/usr/local/sbin/shoplite/cleanup-reports.sh
+
+sudo install -o root -g root -m 644 \
+cron/shoplite.cron \
+/etc/cron.d/shoplite
+```
+
 ### Scheduled tasks
 
 | Schedule | Task | Account |
@@ -221,9 +241,9 @@ Installed system-wide at:
 Cron configuration:
 
 ```cron
-0 */6 * * * root /home/blaze/cloudpros-project/linux-self-healing-web-server/LINUX/shoplite-server-setup/submissions/poshpeck/scripts/sysreport.sh
+0 */6 * * * root /usr/local/sbin/shoplite/sysreport.sh
 
-15 2 * * * root /home/blaze/cloudpros-project/linux-self-healing-web-server/LINUX/shoplite-server-setup/submissions/poshpeck/scripts/cleanup-reports.sh
+15 2 * * * root /usr/local/sbin/shoplite/cleanup-reports.sh
 ```
 
 Root runs both jobs because the report directory is protected and owned by root.
@@ -299,31 +319,15 @@ Configuration:
 
 Because the system report creates a separate timestamped file each time, logrotate treats each matching report as an individual log file.
 
-The cleanup script removes original timestamped reports older than 14 days. Rotated files with suffixes such as `.log.1` and `.log.2.gz` are not matched by the cleanup script and remain under logrotate's management.
+The cleanup script removes matching original reports and rotated archives older than 14 days. This includes files ending in `.log`, `.log.1` and `.log.2.gz`.
+
+Logrotate manages weekly rotation and compression, while the cleanup script enforces the 14-day retention period across both original reports and their rotated archives.
 
 ### Verification
 
 ```bash
 sudo logrotate -d /etc/logrotate.d/shoplite
 ```
-
-### Design decisions and retention
-
-The configuration applies to files matching `/var/log/shoplite/*.log`.
-
-The `weekly` directive defines the rotation frequency, while `rotate 4` retains up to four rotated versions of each matched log file. The `compress` directive compresses rotated files immediately. Since the sysreport script creates uniquely timestamped files, rotated archives are not selected for further rotation by the same wildcard rule.
-
-The `missingok` directive prevents errors when no matching files exist. `notifempty` prevents empty files from being rotated. `create 0640 root root` creates replacement log files with restricted permissions and root ownership.
-
-**Interaction with timestamped reports**
-
-The `sysreport.sh` script creates a separate timestamped file every time it runs. Each report is therefore treated as an individual log file by the wildcard rule.
-
-Once a report is rotated, its filename gains a suffix such as `.log.1`. This no longer matches `/var/log/shoplite/*.log`, so that archive is not selected for another rotation by this rule.
-
-The separate cleanup script handles retention by deleting original reports and rotated archives matching `sysreport-*.log*` when they are older than 14 days.
-
-This means the 14-day cleanup policy controls the overall age of ShopLite report files and archives, while logrotate provides weekly rotation and compression.
 
 Debug mode checks the configuration without performing rotation.
 

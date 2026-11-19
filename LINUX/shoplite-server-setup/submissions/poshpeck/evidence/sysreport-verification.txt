@@ -94,3 +94,31 @@ C:\              981259260 790472128 190787132      81% /mnt/c
 [2026-11-14 07:34:10] 
 [2026-11-14 07:34:10] FAILED SSH LOGINS IN THE LAST 24 HOURS
 [2026-11-14 07:34:11] No failed SSH login records found in the last 24 hours.
+
+10. SSH logging availability verification
+==========================================
+Test date: 2026-11-19 02:33:21
+
+Environment checks:
+- journalctl: /usr/bin/journalctl
+- Authentication log: /var/log/auth.log exists and is readable
+- SSH service: inactive (socket activated)
+- SSH socket: active and listening on port 22
+- No SSH authentication events found in the journal during the test window
+
+Expected report:
+SSH authentication status unknown: no SSH authentication events were found in the system journal during the last 24 hours.
+
+Result: PASS - the script reports unavailable authentication activity instead of incorrectly claiming zero failed attempts.
+
+11. Actual SSH reporting verification using installed script
+============================================================
+Test date: 2026-11-19 03:59:59
+Command: sudo /usr/local/sbin/shoplite/sysreport.sh
+
+Actual output:
+SSH AUTHENTICATION ACTIVITY IN THE LAST 24 HOURS
+SSH authentication status unknown: no SSH authentication events were found in the system journal during the last 24 hours.
+
+Exit status: 0
+PASS: Installed script executed successfully and correctly reported unknown SSH authentication status.

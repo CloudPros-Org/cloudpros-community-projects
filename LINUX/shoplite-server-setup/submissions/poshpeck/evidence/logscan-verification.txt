@@ -15,16 +15,16 @@ PASS
 [2026-11-14 08:42:54] Log file: /var/log/nginx/access.log
 [2026-11-14 08:42:54] Top results limit: 5
 [2026-11-14 08:42:54] Total requests: 4
-[2026-11-14 08:42:54] 
+[2026-11-14 08:42:54]
 [2026-11-14 08:42:54] HTTP STATUS CODE BREAKDOWN
 HTTP 200: 4 requests
-[2026-11-14 08:42:54] 
+[2026-11-14 08:42:54]
 [2026-11-14 08:42:54] 5XX SERVER ERRORS
 [2026-11-14 08:42:54] Total 5xx errors: 0
-[2026-11-14 08:42:54] 
+[2026-11-14 08:42:54]
 [2026-11-14 08:42:54] TOP 5 CLIENT IP ADDRESSES
 IP: 127.0.0.1          Requests: 4
-[2026-11-14 08:42:54] 
+[2026-11-14 08:42:54]
 [2026-11-14 08:42:54] TOP 5 REQUESTED URLS
 URL: /                              Requests: 2
 URL: /favicon.ico                   Requests: 1
@@ -37,21 +37,21 @@ URL: /nonexistent-page              Requests: 1
 [2026-11-14 08:42:54] Log file: /tmp/shoplite-test-access.log
 [2026-11-14 08:42:54] Top results limit: 5
 [2026-11-14 08:42:54] Total requests: 5
-[2026-11-14 08:42:54] 
+[2026-11-14 08:42:54]
 [2026-11-14 08:42:54] HTTP STATUS CODE BREAKDOWN
 HTTP 200: 2 requests
 HTTP 404: 1 requests
 HTTP 500: 1 requests
 HTTP 503: 1 requests
-[2026-11-14 08:42:54] 
+[2026-11-14 08:42:54]
 [2026-11-14 08:42:54] 5XX SERVER ERRORS
 [2026-11-14 08:42:54] Total 5xx errors: 2
-[2026-11-14 08:42:54] 
+[2026-11-14 08:42:54]
 [2026-11-14 08:42:54] TOP 5 CLIENT IP ADDRESSES
 IP: 192.0.2.10         Requests: 2
 IP: 192.0.2.12         Requests: 2
 IP: 192.0.2.11         Requests: 1
-[2026-11-14 08:42:54] 
+[2026-11-14 08:42:54]
 [2026-11-14 08:42:54] TOP 5 REQUESTED URLS
 URL: /checkout                      Requests: 1
 URL: /home                          Requests: 1
@@ -66,16 +66,16 @@ URL: /products                      Requests: 1
 [2026-11-14 08:42:54] Log file: /tmp/shoplite-test-access.log
 [2026-11-14 08:42:54] Top results limit: 5
 [2026-11-14 08:42:54] Total requests: 1
-[2026-11-14 08:42:54] 
+[2026-11-14 08:42:54]
 [2026-11-14 08:42:54] HTTP STATUS CODE BREAKDOWN
 HTTP 500: 1 requests
-[2026-11-14 08:42:54] 
+[2026-11-14 08:42:54]
 [2026-11-14 08:42:54] 5XX SERVER ERRORS
 [2026-11-14 08:42:54] Total 5xx errors: 1
-[2026-11-14 08:42:54] 
+[2026-11-14 08:42:54]
 [2026-11-14 08:42:54] TOP 5 CLIENT IP ADDRESSES
 IP: 192.0.2.12         Requests: 1
-[2026-11-14 08:42:54] 
+[2026-11-14 08:42:54]
 [2026-11-14 08:42:54] TOP 5 REQUESTED URLS
 URL: /checkout                      Requests: 1
 
@@ -113,4 +113,112 @@ Options:
   -n N       Number of top results to display (default: 5)
   -s STATUS  Filter requests by HTTP status code
   -h         Display this help message
+Exit code: 0
+
+10. Additional input validation tests
+==========================================
+
+Test: Reject zero results
+Error: -n must be a positive integer.
+Usage: logscan.sh [-f FILE] [-n N] [-s STATUS] [-h]
+
+Options:
+  -f FILE    Nginx access log file (default: /var/log/nginx/access.log)
+  -n N       Number of top results to display (default: 5)
+  -s STATUS  Filter requests by HTTP status code
+  -h         Display this help message
+Exit code: 2
+
+Test: Reject non-numeric results
+Error: -n must be a positive integer.
+Usage: logscan.sh [-f FILE] [-n N] [-s STATUS] [-h]
+
+Options:
+  -f FILE    Nginx access log file (default: /var/log/nginx/access.log)
+  -n N       Number of top results to display (default: 5)
+  -s STATUS  Filter requests by HTTP status code
+  -h         Display this help message
+Exit code: 2
+
+Test: Reject status below 100
+Error: -s must be a valid three-digit HTTP status code (100-599).
+Usage: logscan.sh [-f FILE] [-n N] [-s STATUS] [-h]
+
+Options:
+  -f FILE    Nginx access log file (default: /var/log/nginx/access.log)
+  -n N       Number of top results to display (default: 5)
+  -s STATUS  Filter requests by HTTP status code
+  -h         Display this help message
+Exit code: 2
+
+Test: Reject status above 599
+Error: -s must be a valid three-digit HTTP status code (100-599).
+Usage: logscan.sh [-f FILE] [-n N] [-s STATUS] [-h]
+
+Options:
+  -f FILE    Nginx access log file (default: /var/log/nginx/access.log)
+  -n N       Number of top results to display (default: 5)
+  -s STATUS  Filter requests by HTTP status code
+  -h         Display this help message
+Exit code: 2
+
+Test: Accept lower HTTP boundary
+Usage: logscan.sh [-f FILE] [-n N] [-s STATUS] [-h]
+
+Options:
+  -f FILE    Nginx access log file (default: /var/log/nginx/access.log)
+  -n N       Number of top results to display (default: 5)
+  -s STATUS  Filter requests by HTTP status code
+  -h         Display this help message
+Exit code: 0
+
+Test: Accept upper HTTP boundary
+Usage: logscan.sh [-f FILE] [-n N] [-s STATUS] [-h]
+
+Options:
+  -f FILE    Nginx access log file (default: /var/log/nginx/access.log)
+  -n N       Number of top results to display (default: 5)
+  -s STATUS  Filter requests by HTTP status code
+  -h         Display this help message
+Exit code: 0
+
+11. HTTP status boundary validation without help option
+=======================================================
+Test date: 2026-11-19 03:50:34
+Log file: /var/log/nginx/access.log (empty, 0 bytes)
+
+Test: Accept HTTP status 100
+[2026-11-19 03:50:34] ==========================================
+[2026-11-19 03:50:34] SHOPLITE NGINX LOG ANALYSIS
+[2026-11-19 03:50:34] ==========================================
+[2026-11-19 03:50:34] Log file: /var/log/nginx/access.log
+[2026-11-19 03:50:34] Top results limit: 5
+[2026-11-19 03:50:34] Total requests: 0
+[2026-11-19 03:50:34]
+[2026-11-19 03:50:34] HTTP STATUS CODE BREAKDOWN
+[2026-11-19 03:50:34]
+[2026-11-19 03:50:34] 5XX SERVER ERRORS
+[2026-11-19 03:50:34] Total 5xx errors: 0
+[2026-11-19 03:50:34]
+[2026-11-19 03:50:34] TOP 5 CLIENT IP ADDRESSES
+[2026-11-19 03:50:34]
+[2026-11-19 03:50:34] TOP 5 REQUESTED URLS
+Exit code: 0
+
+Test: Accept HTTP status 599
+[2026-11-19 03:50:34] ==========================================
+[2026-11-19 03:50:34] SHOPLITE NGINX LOG ANALYSIS
+[2026-11-19 03:50:34] ==========================================
+[2026-11-19 03:50:34] Log file: /var/log/nginx/access.log
+[2026-11-19 03:50:34] Top results limit: 5
+[2026-11-19 03:50:34] Total requests: 0
+[2026-11-19 03:50:34]
+[2026-11-19 03:50:34] HTTP STATUS CODE BREAKDOWN
+[2026-11-19 03:50:34]
+[2026-11-19 03:50:34] 5XX SERVER ERRORS
+[2026-11-19 03:50:34] Total 5xx errors: 0
+[2026-11-19 03:50:34]
+[2026-11-19 03:50:34] TOP 5 CLIENT IP ADDRESSES
+[2026-11-19 03:50:34]
+[2026-11-19 03:50:34] TOP 5 REQUESTED URLS
 Exit code: 0

@@ -103,17 +103,39 @@ else
     log "No failed systemd units."
 fi
 
-# Failed SSH login attempts in the last 24 hours
+
+# SSH authentication activity in the last 24 hours
 log ""
-log "FAILED SSH LOGINS IN THE LAST 24 HOURS"
+log "SSH AUTHENTICATION ACTIVITY IN THE LAST 24 HOURS"
 
-SSH_FAILURES="$(
-    journalctl --since "24 hours ago" --no-pager 2>/dev/null |
-    grep -Ei 'sshd.*(Failed password|Invalid user|authentication failure)' || true
-)"
+if ! command -v journalctl >/dev/null 2>&1; then
+    log "SSH login reporting unavailable: journalctl is not installed."
 
-if [[ -n "$SSH_FAILURES" ]]; then
-    printf '%s\n' "$SSH_FAILURES"
+elif SSH_JOURNAL="$(journalctl --since "24 hours ago" --no-pager 2>&1)"; then
+
+    SSH_AUTH_EVENTS="$(
+        printf '%s\n' "$SSH_JOURNAL" |
+        grep -Ei 'sshd\[[0-9]+\]:.*(Accepted [^ ]+|Failed password|Invalid user|authentication failure)|pam_unix\(sshd:[^)]+\): authentication failure' || true
+    )"
+
+    if [[ -z "$SSH_AUTH_EVENTS" ]]; then
+        log "SSH authentication status unknown: no SSH authentication events were found in the system journal during the last 24 hours."
+
+    else
+        SSH_FAILURES="$(
+            printf '%s\n' "$SSH_AUTH_EVENTS" |
+            grep -Ei 'Failed password|Invalid user|authentication failure' || true
+        )"
+
+        if [[ -n "$SSH_FAILURES" ]]; then
+            log "Failed SSH authentication attempts found:"
+            printf '%s\n' "$SSH_FAILURES"
+        else
+            log "No failed SSH login attempts found in the available authentication records during the last 24 hours."
+        fi
+    fi
+
 else
-    log "No failed SSH login records found in the last 24 hours."
+    log "SSH login reporting unavailable: unable to access the system journal."
+    printf '%s\n' "$SSH_JOURNAL"
 fi
