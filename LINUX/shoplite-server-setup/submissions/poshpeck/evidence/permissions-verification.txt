@@ -1,0 +1,38 @@
+==========================================
+SHOPLITE - PERMISSIONS VERIFICATION
+==========================================
+
+1. Ava account and group membership
+uid=1002(ava) gid=1003(ava) groups=1003(ava),1002(shopops)
+
+2. Tom account and group membership
+uid=1003(tom) gid=1004(tom) groups=1004(tom),1002(shopops)
+
+3. Shared directory permissions
+drwxrws---+ 2 root shopops 4096 Nov 13 11:49 /srv/shoplite
+
+4. Shared directory ACL
+getfacl: Removing leading '/' from absolute path names
+# file: srv/shoplite
+# owner: root
+# group: shopops
+# flags: -s-
+user::rwx
+group::rwx
+other::---
+default:user::rwx
+default:group::rwx
+default:mask::rwx
+default:other::---
+
+
+5. Ava creates a file
+
+6. Tom edits Ava's file
+
+7. Verify both users can collaborate
+Created by Ava
+Edited by Tom
+
+8. Verify a non-member is denied access
+PASS: Non-member access denied

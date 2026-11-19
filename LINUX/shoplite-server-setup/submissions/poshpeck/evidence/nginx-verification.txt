@@ -1,0 +1,55 @@
+======================================
+SHOPLITE - NGINX VERIFICATION
+======================================
+
+1. Nginx enabled status
+enabled
+
+2. Nginx running status
+active
+
+3. Nginx service details
+● nginx.service - A high performance web server and a reverse proxy server
+     Loaded: loaded (/usr/lib/systemd/system/nginx.service; enabled; preset: enabled)
+     Active: active (running) since Thu 2026-11-12 08:12:25 GMT; 1 day 5h ago
+       Docs: man:nginx(8)
+   Main PID: 475 (nginx)
+      Tasks: 13 (limit: 19031)
+     Memory: 9.9M (peak: 11.8M)
+        CPU: 147ms
+     CGroup: /system.slice/nginx.service
+             ├─475 "nginx: master process /usr/sbin/nginx -g daemon on; master_process on;"
+             ├─476 "nginx: worker process"
+             ├─477 "nginx: worker process"
+             ├─478 "nginx: worker process"
+             ├─479 "nginx: worker process"
+             ├─480 "nginx: worker process"
+             ├─481 "nginx: worker process"
+             ├─482 "nginx: worker process"
+             ├─483 "nginx: worker process"
+             ├─484 "nginx: worker process"
+             ├─485 "nginx: worker process"
+             ├─486 "nginx: worker process"
+             └─487 "nginx: worker process"
+
+Nov 12 08:12:25 Paul systemd[1]: Starting nginx.service - A high performance web server and a reverse proxy server...
+Nov 12 08:12:25 Paul systemd[1]: Started nginx.service - A high performance web server and a reverse proxy server.
+
+4. HTTP response
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100    24  100    24    0     0   4147      0 --:--:-- --:--:-- --:--:--  4800
+HTTP/1.1 200 OK
+Server: nginx/1.24.0 (Ubuntu)
+Date: Fri, 13 Nov 2026 13:37:14 GMT
+Content-Type: text/plain
+Content-Length: 24
+Connection: keep-alive
+
+CloudPros Server Running
+5. Last five Nginx access log entries
+127.0.0.1 - - [13/Nov/2026:12:03:33 +0000] "HEAD / HTTP/1.1" 200 0 "-" "curl/8.5.0"
+127.0.0.1 - - [13/Nov/2026:12:09:12 +0000] "GET / HTTP/1.1" 200 24 "-" "curl/8.5.0"
+127.0.0.1 - - [13/Nov/2026:13:28:56 +0000] "GET / HTTP/1.1" 200 24 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36"
+127.0.0.1 - - [13/Nov/2026:13:28:56 +0000] "GET /favicon.ico HTTP/1.1" 200 24 "http://127.0.0.1/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36"
+127.0.0.1 - - [13/Nov/2026:13:37:14 +0000] "GET / HTTP/1.1" 200 24 "-" "curl/8.5.0"

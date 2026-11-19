@@ -1,0 +1,50 @@
+======================================
+SHOPLITE - CLEANUP VERIFICATION
+======================================
+
+1. Creating test reports
+total 0
+-rw-r--r-- 1 root root 0 2026-11-15 10:48:53.325729271 +0000 important-file.txt
+-rw-r--r-- 1 root root 0 2026-10-31 10:48:53.337334736 +0000 sysreport-old.log
+-rw-r--r-- 1 root root 0 2026-10-31 10:48:53.337334736 +0000 sysreport-old.log.1
+-rw-r--r-- 1 root root 0 2026-10-31 10:48:53.337334736 +0000 sysreport-old.log.2.gz
+-rw-r--r-- 1 root root 0 2026-11-15 10:48:53.325729271 +0000 sysreport-recent.log
+
+2. Running cleanup script against temporary directory
+[2026-11-15 10:48:53] Starting ShopLite report cleanup
+/tmp/shoplite-cleanup-test/sysreport-old.log
+/tmp/shoplite-cleanup-test/sysreport-old.log.2.gz
+/tmp/shoplite-cleanup-test/sysreport-old.log.1
+[2026-11-15 10:48:53] ShopLite report cleanup completed
+
+3. Files remaining after cleanup
+total 0
+-rw-r--r-- 1 root root 0 2026-11-15 10:48:53.325729271 +0000 important-file.txt
+-rw-r--r-- 1 root root 0 2026-11-15 10:48:53.325729271 +0000 sysreport-recent.log
+
+4. Checking expected results
+PASS: Old reports deleted; recent and unrelated files preserved.
+
+5. Reproducible cleanup verification using current script
+=========================================================
+Test date: 2026-11-19 03:02:13
+Test directory: /tmp/shoplite-cleanup-test.hM3KLZ
+
+Created three reports with timestamps 15 days ago:
+- sysreport-old.log
+- sysreport-old.log.1
+- sysreport-old.log.2.gz
+
+Created two files with timestamps 1 day ago:
+- sysreport-recent.log
+- important-file.txt
+
+Command:
+REPORT_DIR="/tmp/shoplite-cleanup-test.hM3KLZ" bash "LINUX/shoplite-server-setup/submissions/poshpeck/scripts/cleanup-reports.sh"
+
+Result:
+- All three old report files deleted.
+- Recent report preserved.
+- Unrelated file preserved.
+
+PASS: Current cleanup script correctly enforces the 14-day retention policy.
