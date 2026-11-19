@@ -1,0 +1,8 @@
+[Unit]
+Description= Cloudpros health one minute timer
+
+[Timer]
+OnCalendar=*-*-* *:*:00
+
+[Install]
+WantedBy=timers.target
