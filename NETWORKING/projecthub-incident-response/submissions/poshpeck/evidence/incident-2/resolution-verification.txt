@@ -1,0 +1,32 @@
+PROJECTHUB - INCIDENT 2: RESOLUTION VERIFICATION
+==============================================
+2026-11-18T13:39:56+00:00
+
+1. CORRECTED API CONFIGURATION
+{
+  "bind_host": "127.0.0.3",
+  "port": 18081
+}
+
+2. DNS CONFIGURATION
+{
+  "api.projecthub.test": "127.0.0.3",
+  "edge.projecthub.test": "127.0.0.2"
+}
+
+3. SERVICE STATUS
+api      127.0.0.3:18081  TCP reachable
+gateway  127.0.0.2:18080  TCP reachable
+HTTP health via gateway: 200 {
+  "status": "ok",
+  "service": "projecthub-api",
+  "database": "reachable"
+}
+process dns      running
+process api      running
+process gateway  running
+process worker   running
+
+4. APPLICATION VERIFICATION
+PASS /health: HTTP 200 (expected 200)
+PASS /projects: HTTP 200 (expected 200)
