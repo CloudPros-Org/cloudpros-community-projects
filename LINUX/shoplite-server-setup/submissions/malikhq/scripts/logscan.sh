@@ -26,6 +26,16 @@ error() {
     log "ERROR: $*" >&2
 }
 
+tmp_file=""
+
+cleanup() {
+    if [[ -n "${tmp_file:-}" ]]; then
+        rm -f -- "$tmp_file"
+    fi
+}
+
+trap cleanup EXIT
+
 main() {
     local log_file="/var/log/nginx/access.log"
     local top_n=5
@@ -80,10 +90,10 @@ analyse_log() {
     local log_file="$1"
     local top_n="$2"
     local status_filter="$3"
-    local tmp_file total_requests five_xx_count
+    local total_requests five_xx_count
+    
 
-    tmp_file="$(mktemp)"
-    trap 'rm -f "$tmp_file"' EXIT
+tmp_file="$(mktemp)"    
 
     awk -v filter_status="$status_filter" '
     {

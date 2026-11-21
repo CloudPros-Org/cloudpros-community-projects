@@ -1,7 +1,7 @@
 
 ========== SHOPLITE NGINX LOG ANALYSIS ==========
-[2026-11-18 22:44:53] Input file: /var/log/nginx/access.log
-[2026-11-18 22:44:53] Status filter: none
+[2026-11-21 16:57:08] Input file: /var/log/nginx/access.log
+[2026-11-21 16:57:08] Status filter: none
 
 Total requests: 13
 
@@ -17,5 +17,4 @@ Total requests: 13
       2 /health
 
 5xx responses: 0
-[2026-11-18 22:44:53] Log analysis completed
-/usr/local/sbin/logscan.sh: line 1: tmp_file: unbound variable
+[2026-11-21 16:57:08] Log analysis completed
