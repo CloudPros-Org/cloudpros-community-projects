@@ -1,0 +1,20 @@
+
+========== SHOPLITE NGINX LOG ANALYSIS ==========
+[2026-11-21 16:57:08] Input file: /var/log/nginx/access.log
+[2026-11-21 16:57:08] Status filter: none
+
+Total requests: 13
+
+========== COUNTS BY HTTP STATUS ==========
+200 13
+
+========== TOP 3 CLIENT IP ADDRESSES ==========
+     13 127.0.0.1
+
+========== TOP 3 REQUESTED URLS ==========
+      7 /
+      2 /not-found
+      2 /health
+
+5xx responses: 0
+[2026-11-21 16:57:08] Log analysis completed

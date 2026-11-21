@@ -1,0 +1,13 @@
+
+/var/log/shoplite/*.log {
+    weekly
+    rotate 4
+    compress
+    delaycompress
+    missingok
+    notifempty
+    dateext
+    dateformat -%Y%m%d
+    create 0640 root shopops
+    su root shopops
+}
