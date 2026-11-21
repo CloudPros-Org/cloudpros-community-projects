@@ -1,0 +1,39 @@
+PROJECTHUB - BASELINE VERIFICATION
+===================================
+2026-11-18T00:32:24+00:00
+
+1. SERVICE STATUS
+api      127.0.0.3:18081  TCP reachable
+gateway  127.0.0.2:18080  TCP reachable
+HTTP health via gateway: 200 {
+  "status": "ok",
+  "service": "projecthub-api",
+  "database": "reachable"
+}
+process dns      running
+process api      running
+process gateway  running
+process worker   running
+
+2. HTTP VERIFICATION
+PASS /health: HTTP 200 (expected 200)
+PASS /projects: HTTP 200 (expected 200)
+
+3. EDGE DNS LOOKUP
+edge.projecthub.test -> 127.0.0.2
+
+4. API DNS LOOKUP
+api.projecthub.test -> 127.0.0.3
+
+5. WORKER TASK PROCESSING
+{
+  "tasks": [
+    {
+      "id": 1,
+      "title": "ProjectHub baseline worker test",
+      "project_id": 1,
+      "status": "processed",
+      "created_at": "2026-11-18 00:23:23"
+    }
+  ]
+}

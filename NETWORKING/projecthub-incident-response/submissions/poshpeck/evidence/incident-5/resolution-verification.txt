@@ -1,0 +1,66 @@
+PROJECTHUB - INCIDENT 5 RESOLUTION VERIFICATION
+===============================================
+Date: 2026-11-20T23:52:54+00:00
+
+1. Active worker configuration
+{
+  "api_host": "api.projecthub.test",
+  "api_port": 18081,
+  "poll_seconds": 2
+}
+
+2. Default worker configuration
+{
+  "api_host": "api.projecthub.test",
+  "api_port": 18081,
+  "poll_seconds": 2
+}
+
+3. Worker log
+2026-11-20T23:46:03Z [worker] API connection failed: URLError: <urlopen error [Errno 111] Connection refused>
+2026-11-20T23:46:05Z [worker] API connection failed: URLError: <urlopen error [Errno 111] Connection refused>
+2026-11-20T23:46:07Z [worker] API connection failed: URLError: <urlopen error [Errno 111] Connection refused>
+2026-11-20T23:46:09Z [worker] API connection failed: URLError: <urlopen error [Errno 111] Connection refused>
+2026-11-20T23:46:11Z [worker] API connection failed: URLError: <urlopen error [Errno 111] Connection refused>
+2026-11-20T23:46:13Z [worker] API connection failed: URLError: <urlopen error [Errno 111] Connection refused>
+2026-11-20T23:46:15Z [worker] API connection failed: URLError: <urlopen error [Errno 111] Connection refused>
+2026-11-20T23:46:17Z [worker] API connection failed: URLError: <urlopen error [Errno 111] Connection refused>
+2026-11-20T23:46:19Z [worker] API connection failed: URLError: <urlopen error [Errno 111] Connection refused>
+2026-11-20T23:46:22Z [worker] API connection failed: URLError: <urlopen error [Errno 111] Connection refused>
+2026-11-20T23:46:24Z [worker] API connection failed: URLError: <urlopen error [Errno 111] Connection refused>
+2026-11-20T23:46:26Z [worker] API connection failed: URLError: <urlopen error [Errno 111] Connection refused>
+2026-11-20T23:46:28Z [worker] API connection failed: URLError: <urlopen error [Errno 111] Connection refused>
+2026-11-20T23:46:30Z [worker] API connection failed: URLError: <urlopen error [Errno 111] Connection refused>
+2026-11-20T23:46:30Z [worker] API connection failed: URLError: <urlopen error [Errno 111] Connection refused>
+2026-11-20T23:46:32Z [worker] API connection failed: URLError: <urlopen error [Errno 111] Connection refused>
+2026-11-20T23:46:34Z [worker] API connection failed: URLError: <urlopen error [Errno 111] Connection refused>
+2026-11-20T23:46:52Z [worker] starting; API=api.projecthub.test:18081
+2026-11-20T23:47:32Z [worker] processing task id=3
+2026-11-20T23:47:32Z [worker] completed task id=3
+
+4. API task verification
+{
+  "tasks": [
+    {
+      "id": 3,
+      "title": "Incident 5 worker communication test",
+      "project_id": 1,
+      "status": "processed",
+      "created_at": "2026-11-20 23:47:31"
+    },
+    {
+      "id": 2,
+      "title": "ProjectHub baseline worker test",
+      "project_id": 1,
+      "status": "processed",
+      "created_at": "2026-11-18 08:31:05"
+    },
+    {
+      "id": 1,
+      "title": "ProjectHub baseline worker test",
+      "project_id": 1,
+      "status": "processed",
+      "created_at": "2026-11-18 00:23:23"
+    }
+  ]
+}
