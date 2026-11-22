@@ -1,0 +1,38 @@
+PROJECTHUB - INCIDENT 4 INITIAL INVESTIGATION
+=============================================
+Date: 2026-11-20
+Incident: Application routing failure
+
+1. Initial observations
+
+The gateway and API were reachable. The health endpoint returned HTTP 200,
+but the projects endpoint returned HTTP 404.
+
+2. Gateway log evidence
+
+2026-11-20T22:44:13Z [gateway] GET /health -> api.projecthub.test:18081/health [200]
+2026-11-20T22:45:17Z [gateway] GET /health -> api.projecthub.test:18081/health [200]
+2026-11-20T22:45:17Z [gateway] "GET /projects HTTP/1.1" 404 -
+2026-11-20T22:45:17Z [gateway] GET /projects -> api.projecthub.test:18081/internal/projects [404]
+
+3. Investigation findings
+
+The gateway successfully reached the API because the health endpoint
+returned HTTP 200.
+
+However, the gateway forwarded the projects request to
+/internal/projects instead of the expected /api/projects.
+
+This indicated an application routing/path-prefix problem rather than
+a DNS resolution or TCP connectivity failure.
+
+4. Root cause
+
+The active gateway configuration used the incorrect API prefix: /internal.
+
+The expected API prefix was /api.
+
+5. Resolution evidence reference
+
+See resolution-verification.txt for the corrected gateway configuration
+and successful HTTP verification.

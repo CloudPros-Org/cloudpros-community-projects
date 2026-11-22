@@ -1,0 +1,45 @@
+PROJECTHUB - INCIDENT 1: RESOLUTION AND VERIFICATION
+====================================================
+2026-11-18T08:41:36+00:00
+
+1. CORRECTED ACTIVE DNS CONFIGURATION
+{
+  "api.projecthub.test": "127.0.0.3",
+  "edge.projecthub.test": "127.0.0.2"
+}
+
+2. API DNS LOOKUP
+api.projecthub.test -> 127.0.0.3
+
+3. EDGE DNS LOOKUP
+edge.projecthub.test -> 127.0.0.2
+
+4. SERVICE STATUS
+api      127.0.0.3:18081  TCP reachable
+gateway  127.0.0.2:18080  TCP reachable
+HTTP health via gateway: 200 {
+  "status": "ok",
+  "service": "projecthub-api",
+  "database": "reachable"
+}
+process dns      running
+process api      running
+process gateway  running
+process worker   running
+
+5. VERIFICATION
+PASS /health: HTTP 200 (expected 200)
+PASS /projects: HTTP 200 (expected 200)
+
+6. GATEWAY HEALTH
+HTTP/1.0 200 OK
+Server: ProjectHubEdge/1.0 Python/3.12.3
+Date: Wed, 18 Nov 2026 08:41:36 GMT
+Content-Type: application/json; charset=utf-8
+Content-Length: 78
+
+{
+  "status": "ok",
+  "service": "projecthub-api",
+  "database": "reachable"
+}

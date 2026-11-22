@@ -1,0 +1,42 @@
+PROJECTHUB - INCIDENT 1: INITIAL INVESTIGATION
+==============================================
+2026-11-18T01:01:38+00:00
+
+1. ACTIVE DNS CONFIGURATION
+{
+  "api.projecthub.test": "127.0.0.9",
+  "edge.projecthub.test": "127.0.0.2"
+}
+
+2. ORIGINAL DNS CONFIGURATION
+{
+  "api.projecthub.test": "127.0.0.3",
+  "edge.projecthub.test": "127.0.0.2"
+}
+
+3. EDGE DNS LOOKUP
+edge.projecthub.test -> 127.0.0.2
+
+4. API DNS LOOKUP
+api.projecthub.test -> 127.0.0.9
+
+5. SERVICE STATUS
+api      127.0.0.3:18081  TCP reachable
+gateway  127.0.0.2:18080  TCP reachable
+HTTP health via gateway: 502 {"error": "bad_gateway", "detail": "[Errno 111] Connection refused"}
+process dns      running
+process api      running
+process gateway  running
+process worker   running
+
+6. GATEWAY HEALTH TEST
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100    68  100    68    0     0  44619      0 --:--:-- --:--:-- --:--:-- 68000
+HTTP/1.0 502 Bad Gateway
+Server: ProjectHubEdge/1.0 Python/3.12.3
+Date: Wed, 18 Nov 2026 01:01:38 GMT
+Content-Type: application/json
+Content-Length: 68
+
+{"error": "bad_gateway", "detail": "[Errno 111] Connection refused"}

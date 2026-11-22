@@ -1,0 +1,38 @@
+PROJECTHUB - INCIDENT 4 RESOLUTION EVIDENCE
+============================================
+Date: 2026-11-20 22:53:44 GMT
+
+1. Corrected gateway configuration
+{
+  "bind_host": "127.0.0.2",
+  "port": 18080,
+  "upstream_host": "api.projecthub.test",
+  "upstream_port": 18081,
+  "api_prefix": "/api"
+}
+
+2. Default gateway configuration
+{
+  "bind_host": "127.0.0.2",
+  "port": 18080,
+  "upstream_host": "api.projecthub.test",
+  "upstream_port": 18081,
+  "api_prefix": "/api"
+}
+
+3. Service status
+api      127.0.0.3:18081  TCP reachable
+gateway  127.0.0.2:18080  TCP reachable
+HTTP health via gateway: 200 {
+  "status": "ok",
+  "service": "projecthub-api",
+  "database": "reachable"
+}
+process dns      running
+process api      running
+process gateway  running
+process worker   running
+
+4. Formal verification
+PASS /health: HTTP 200 (expected 200)
+PASS /projects: HTTP 200 (expected 200)
