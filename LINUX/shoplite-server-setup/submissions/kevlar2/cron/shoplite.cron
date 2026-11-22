@@ -1,0 +1,9 @@
+SHELL=/bin/bash
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+
+# Run sysreport.sh every 6 hours (at 00:00, 06:00, 12:00, and 18:00)
+0 */6 * * * /usr/local/bin/sysreport.sh >/dev/null 2>>/var/log/sysreport-cron.log
+
+# Daily at 03:15: selectively delete sysreport reports older than 14 days
+# (the trailing * also matches logrotate's renamed copies: .log.1, .log.1.gz)
+15 3 * * * /usr/bin/find /var/log/shoplite -maxdepth 1 -type f -name 'sysreport-*.log*' -mtime +14 -delete
