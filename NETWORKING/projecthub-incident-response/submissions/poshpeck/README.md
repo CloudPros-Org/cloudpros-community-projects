@@ -61,8 +61,6 @@ The API hostname mapping was restored to `127.0.0.3`.
 
 **Status:** Resolved
 
-**Status:** Resolved
-
 #### Impact
 The ProjectHub gateway returned HTTP 502 because it could not establish a TCP connection to the backend API. Although the API process was running, it was listening on an unexpected loopback address.
 
@@ -273,7 +271,8 @@ Both formal verification checks passed.
 
 Resolution evidence is stored in:
 
-`evidence/incident-4/resolution-verification.txt`
+- `evidence/incident-4/initial-investigation.txt` — records the initial HTTP 404 response and the gateway log showing the request forwarded to `/internal/projects`.
+- `evidence/incident-4/resolution-verification.txt` — records the corrected `/api` configuration and successful HTTP verification.
 
 #### Prevention
 
