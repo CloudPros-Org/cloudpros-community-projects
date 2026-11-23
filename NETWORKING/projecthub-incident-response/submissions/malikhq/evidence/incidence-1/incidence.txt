@@ -1,0 +1,24 @@
+###
+STATUS
+#####
+api      127.0.0.3:18081  TCP reachable
+gateway  127.0.0.2:18080  TCP reachable
+HTTP health via gateway: 502 {"error": "bad_gateway", "detail": "[Errno 111] Connection refused"}
+process dns      running
+process api      running
+process gateway  running
+process worker   running
+
+
+###
+VERIFY
+#####
+FAIL /health: HTTP 502 (expected 200)
+{"error": "bad_gateway", "detail": "[Errno 111] Connection refused"}
+FAIL /projects: HTTP 502 (expected 200)
+{"error": "bad_gateway", "detail": "[Errno 111] Connection refused"}
+
+###
+DNS-LOOKUP
+#####
+api.projecthub.test -> 127.0.0.9
