@@ -1,0 +1,123 @@
+###
+ENVIRONMENT SETUP
+#####
+sh scripts/setup.sh
+sh scripts/start.sh
+sh scripts/status.sh
+sh scripts/verify.sh
+
+Python 3.14.4 detected; required lab ports are available.
+ProjectHub lab initialised. No system configuration or firewall rules were changed.
+
+Setup complete. Start the services with: sh scripts/start.sh
+ProjectHub processes launched. Use 'status' and the incident checks to assess health.
+
+
+
+###
+SERVICE STATUS
+#####
+api      127.0.0.3:18081  TCP reachable
+gateway  127.0.0.2:18080  TCP reachable
+HTTP health via gateway: 200
+
+process dns      running
+process api      running
+process gateway  running
+process worker   running
+
+
+
+
+###
+VERIFICATION RESULTS
+#####
+PASS /health: HTTP 200 (expected 200)
+PASS /projects: HTTP 200 (expected 200)
+
+
+
+
+###
+HEALTH ENDPOINT
+#####
+curl -i http://127.0.0.2:18080/health
+
+HTTP/1.0 200 OK
+Server: ProjectHubEdge/1.0 Python/3.14.4
+Date: Mon, 23 Nov 2026 15:35:19 GMT
+Content-Type: application/json; charset=utf-8
+Content-Length: 78
+
+{
+  "status": "ok",
+  "service": "projecthub-api",
+  "database": "reachable"
+}
+
+
+
+
+###
+PROJECTS ENDPOINT
+#####
+curl -i http://127.0.0.2:18080/projects
+
+HTTP/1.0 200 OK
+Server: ProjectHubEdge/1.0 Python/3.14.4
+Date: Mon, 23 Nov 2026 15:35:19 GMT
+Content-Type: application/json; charset=utf-8
+Content-Length: 293
+
+{
+  "projects": [
+    {
+      "id": 1,
+      "name": "Network refresh",
+      "owner": "Maya Chen"
+    },
+    {
+      "id": 2,
+      "name": "Customer portal",
+      "owner": "Jordan Lee"
+    },
+    {
+      "id": 3,
+      "name": "Observability rollout",
+      "owner": "Sam Patel"
+    }
+  ]
+}
+
+
+
+
+
+###
+TASKS ENDPOINT
+#####
+curl -i http://127.0.0.2:18080/tasks
+
+HTTP/1.0 200 OK
+Server: ProjectHubEdge/1.0 Python/3.14.4
+Date: Mon, 23 Nov 2026 15:35:19 GMT
+Content-Type: application/json; charset=utf-8
+Content-Length: 17
+
+{
+  "tasks": []
+}
+
+
+
+
+
+###
+INITIAL ASSESSMENT
+#####
+All four services are running.
+API and gateway TCP connectivity is successful.
+Health, projects, and tasks endpoints return HTTP 200 OK.
+The database is reachable.
+Initial health checks passed; the lab is ready for Incident 1 investigation.
+#####

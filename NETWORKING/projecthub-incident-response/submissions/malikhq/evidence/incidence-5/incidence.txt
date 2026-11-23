@@ -1,0 +1,38 @@
+###
+STATUS
+#####
+api      127.0.0.3:18081  TCP reachable
+gateway  127.0.0.2:18080  TCP reachable
+HTTP health via gateway: 200 {
+  "status": "ok",
+  "service": "projecthub-api",
+  "database": "reachable"
+}
+process dns      running
+process api      running
+process gateway  running
+process worker   running
+
+
+###
+VERIFY
+#####
+PASS /health: HTTP 200 (expected 200)
+PASS /projects: HTTP 200 (expected 200)
+
+
+###
+WORKER
+#####
+2026-11-23T21:15:47Z [worker] API connection failed: URLError: <urlopen error [Errno 111] Connection refused>
+2026-11-23T21:15:49Z [worker] API connection failed: URLError: <urlopen error [Errno 111] Connection refused>
+2026-11-23T21:15:51Z [worker] API connection failed: URLError: <urlopen error [Errno 111] Connection refused>
+2026-11-23T21:15:53Z [worker] API connection failed: URLError: <urlopen error [Errno 111] Connection refused>
+2026-11-23T21:15:55Z [worker] API connection failed: URLError: <urlopen error [Errno 111] Connection refused>
+2026-11-23T21:15:57Z [worker] API connection failed: URLError: <urlopen error [Errno 111] Connection refused>
+2026-11-23T21:15:59Z [worker] API connection failed: URLError: <urlopen error [Errno 111] Connection refused>
+2026-11-23T21:16:01Z [worker] API connection failed: URLError: <urlopen error [Errno 111] Connection refused>
+2026-11-23T21:16:03Z [worker] API connection failed: URLError: <urlopen error [Errno 111] Connection refused>
+2026-11-23T21:16:05Z [worker] API connection failed: URLError: <urlopen error [Errno 111] Connection refused>
+2026-11-23T21:16:07Z [worker] API connection failed: URLError: <urlopen error [Errno 111] Connection refused>
+2026-11-23T21:16:09Z [worker] API connection failed: URLError: <urlopen error [Errno 111] Connection refused>
